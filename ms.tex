@@ -1,0 +1,213 @@
+\documentclass[aps,pre,twocolumn,letterpaper,floatfix,showpacs]{revtex4}
+\usepackage{graphicx} 
+\usepackage{amsmath,amssymb,amsfonts} 
+\usepackage{mathtools}
+\usepackage{pdfpages}
+\usepackage{afterpage}
+\usepackage[hidelinks]{hyperref} 
+\usepackage{epstopdf}
+\begin{document}
+\title{Generating realistic nanopores using procedural methods}
+%\author{A. Hafreager, N. Groeneboom, A. Malthe-S\oe renssen$^1$}
+\email{anders.hafreager@fys.uio.no}
+\author{Anders Hafreager $^{1}$} 
+\author{Nicolaas Groeneboom $^{1}$} 
+\author{Anders Malthe-S\o renssen $^1$}
+\affiliation{$^1$Department of Physics - University of Oslo\\Sem S{\ae}lands vei 24, NO-0316, Oslo, Norway }
+\date{\today} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract} 
+\end{abstract} 
+ 
+\maketitle
+ 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+In recent years, computational ...
+
+
+\section{Method}
+
+
+\subsection{Procedural noise}
+\label{sec:perlin}
+
+Procedural algorithmic methods for creating realistic-looking
+fractal-like patterns have been around for more than 30 years. The most famous of these
+algorithms is Perlin noise, first developed by Ken Perlin in 1982 for
+use in the movie ``Tron''.  Perlin noise is a type of pseudo-random
+gradient noise that mimics a Gaussian field, but at low computational cost. 
+An improved version of Perlin noise is called Simplex
+noise, which has several advantages over standard Perlin noise in
+terms of scalability and speed.  
+
+
+\subsubsection{Perlin noise - an overview}
+An overview of the current state of procedural noise functions can be
+found in \cite{lagae:2010}.  Perlin noise \citep{perlin:2002} 
+is a band limited repeatable pseudo-random function
+from $\mathbb R^n \to \mathbb R$ that is computationally fast and has
+properties which make it suitable for creating patterns that mimic
+nature. Perlin noise is an approximation to Gaussian filtered noise
+implemented as a pseudo-random spline. The algorithm uses a predefined
+grid of gradients pointing in a random direction, where for any point
+within a grid, we interpolate the gradients from the four corners. The
+algorithm is as follows:
+\begin{itemize}
+  \item[1.] For a point, obtain the four closest gradients in the grid.
+   \item [2.] For each of the gradients, calculate the dot product
+     between the gradient and a vector defined by the  the distance
+     between the the point and the current grid corner. 
+   \item [3.] Instead of linear interpolation $F(t) = t$, use a fade function to produce smoother interpolated values. Perlin noise typically uses the following fade function: $F(t) = t ^3 (t  (6 - 15) + 10)$.
+    \item [4.] Obtain the final value by linearly interpolating between the x-axis and
+      use this result to linearly interpolate the y-axis. 
+\end{itemize} 
+Simplex noise works in a similar manner, but requires fewer
+computational steps, scales better in higher ($\ge 3$) dimensions and has fewer 
+anisotropic properties. 
+
+\subsubsection{Properties of procedural noise}
+Standard Perlin noise is known for having several anisotropic features
+\citep{lagae:2010}. Perlin noise also gives rise to a ``textile''
+pattern in the $x$ and $y$-directions, which is evident from the upper
+left part of figure \ref{fig:noise}, depicting 2D Perlin noise in
+a single octave. The upper-right part shows the same node for Simplex noise,
+with less obvious patterns. However, when combining several octaves,
+as depicted in the two lower parts, these anisotropic patterns tend to cancel
+out. In any case, for observations of weak gravitational lensing, these anisotropies would occur on much smaller 
+scales than the typical resolution. 
+In addition, we have calculated the statistical distributions for Perlin and simplex noise
+with $\sigma = 0.2$, and have plotted the results in figure \ref{fig:properties}.
+Each procedural noise method has distributions that are close to normal, 
+but with some intrinsically shifted sigma and mean. 
+
+
+
+\begin{figure}
+\includegraphics[width=.5\textwidth]{noise.eps}
+\caption{Perlin noise (left) vs simplex noise (right). Note the
+  straight x-y pattern in the single upper Perlin mode and the less
+  anisotropic simplex mode. Lower part: combining octaves tend
+  to remove these patterns.}
+\label{fig:noise}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=.5\textwidth]{perlinstats.eps}
+%\mbox{\epsfig{file=perlinstats.eps, width=\linewidth}}
+\caption{Normalized distributions of Perlin noise and simplex noise compared with a
+  Gaussian distribution. Note how both noise functions produce
+  near-Gaussian, but slightly offset distributions.}
+\label{fig:properties}
+\end{figure}
+
+\subsection{Multiple octaves: creating patterns}
+\label{sec:octaves}
+The different octaves from procedural noise functions can be combined
+to produce a wide range of nature-like patterns. A generic
+N-dimensional procedural function $\Phi(\vec x): \mathbb R^N \to
+\mathbb R$ could be expressed as
+\begin{equation}
+\label{eq:procedural}
+ \Phi(\vec x) = \Theta \Big(\sum_k \kappa (k) P(  f_s (\vec x,k) )) \Big),
+ \end{equation}
+where $f_s(\vec x,k)$ describes the frequency scale modifier (e.g. $f_s(\vec x,k) =
+k\vec x$), $\kappa(k)$ is the octave amplitude (eg $\kappa(k) = 1/k$)
+and $\Theta(x)$ an overall modifier (e.g. $\Theta(x) = x$ or
+$\Theta(x) = \frac{1}{x}$). In a sense, $\kappa(k)$ is similar to Fourier coefficients. 
+In its simplest case, summing directly
+over the octaves with amplitude $1/k$ results in 
+\begin{equation}
+\label{eq:perlinlinear}
+ \Phi(\vec x) = \sum_k \frac{1}{k} P( k\vec x), 
+\end{equation}
+and produces an 2D procedural noise pattern depicted in the lower
+part of figure \ref{fig:noise}. 
+
+
+
+
+\ref{burganos1998gas}
+
+The generic noise model presented in \ref{eq:procedural} can easily be extrapolated to 3 dimensions. In Lammps, we
+simulate a uniform box of N $SiO_2$ particles without constraints, and proceed by cutting away particles above a given threshold $T$.
+\begin{figure}
+\includegraphics[width=.45\textwidth]{pores2.png}
+%#\includegraphics[width=.5\textwidth]{pores2.eps}
+%\includepdf{ pores1.pdf }
+\caption{Model with best-fit parameters}
+We construct a generic sum over procedural noise octaves with the expression: 
+\label{fig:model12}
+\end{figure}
+\begin{equation}
+	M_1(\vec x) = \sum_{\omega=0}^{\Omega} A \psi^{(\frac{1}{2})^{\omega +1}}   N\big((\vec x + \sigma \cdot \omega)\nu \cdot 2^\omega \big),
+\label{eq:noisemodel1}
+\end{equation}
+where $\Omega$ is the total amount of octaves, $\psi$ the persistence (scale falloff), $N$ a generic $N$-dimensional noise function, $\sigma$ a predefined random vector that removes anisotropic effects and $\nu$ the frequency modifier. For each mode, the frequency is thus multiplied, while the overall amplitude is damped by a given persistence. In the end, we simulate a large set of bulk particles without any walls, and use the noise function to remove particles that are not in a procedural void. 
+
+
+\subsection{Simulations}
+LAMMPS $SiO_2$ simulation heated -> expand box -> cool down
+\begin{figure}
+\includegraphics[width=.45\textwidth]{pores1.png}
+%#\includegraphics[width=.5\textwidth]{pores2.eps}
+%\includepdf{ pores1.pdf }
+\caption{LAMMPS $SiO_2$ simulation.}
+\label{fig:model12}
+\end{figure}
+
+\subsection{Implementation}
+InfiniteDiffusion - nanopores. 
+Octree
+
+\subsection{Model Measure}
+In order to compare our procedural noise model with actual simulations, we define various measures that quantify the internal structure of the 
+\subsubsection{Distance-to-atom (DTA)}
+\subsubsection{Fractal Dimension}
+\subsubsection{Octree Counting Measure (OCM)}
+
+\subsection{Diffusion Measure}
+
+
+\begin{figure}
+\includegraphics[width=.5\textwidth]{model1.eps}
+\caption{blahblah}
+\label{fig:model12}
+\end{figure}
+
+
+
+\section{Results}
+
+\subsection{Model measure}
+
+
+\subsection{Diffusion $R^2$}
+\begin{figure}
+\includegraphics[width=.5\textwidth]{compare.png}
+\caption{Results. }
+\label{fig:model12}
+\end{figure}
+
+\section{Conclusion}
+It works! Hopefully.
+\subsection{Future work}
+Stress / shear test both models. Etc.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliography{bibliography}
+
+%\begin{thebibliography}{9}
+
+%\bibitem[Groeneboom2014]{groeneboom2014} Groeneboom, N.~E., \& Dahle, H.\ 2014, \apj, 783, 138 
+
+%\end{thebibliography}
+
+
+\end{document}  
