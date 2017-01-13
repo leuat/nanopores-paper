@@ -134,46 +134,86 @@ part of figure \ref{fig:noise}.
 
 The generic noise model presented in \ref{eq:procedural} can easily be extrapolated to 3 dimensions. In Lammps, we
 simulate a uniform box of N $SiO_2$ particles without constraints, and proceed by cutting away particles above a given threshold $T$.
-\begin{figure}
-\includegraphics[width=.45\textwidth]{pores2.png}
+%\begin{figure}
+%\includegraphics[width=.45\textwidth]{pores2.png}
 %#\includegraphics[width=.5\textwidth]{pores2.eps}
 %\includepdf{ pores1.pdf }
-\caption{Model with best-fit parameters}
+%\caption{Model with best-fit parameters}
+%\label{fig:model12}
+%\end{figure}
+
+
+%\subsection{Simulations}
+%LAMMPS $SiO_2$ simulation heated -> expand box -> cool down
+%\begin{figure}
+%\includegraphics[width=.45\textwidth]{pores1.png}
+%%#\includegraphics[width=.5\textwidth]{pores2.eps}
+%%\includepdf{ pores1.pdf }
+%\caption{LAMMPS $SiO_2$ simulation.}
+%\label{fig:model12}
+%\end{figure}
+
+\section{Model}
 We construct a generic sum over procedural noise octaves with the expression: 
-\label{fig:model12}
-\end{figure}
 \begin{equation}
-	M_1(\vec x) = \sum_{\omega=0}^{\Omega} A \psi^{(\frac{1}{2})^{\omega +1}}   N\big((\vec x + \sigma \cdot \omega)\nu \cdot 2^\omega \big),
+  M_1(\vec x) = \sum_{\omega=0}^{\Omega} \psi^{(\frac{1}{2})^{\omega +1}}   N\big((\vec x + \sigma \cdot \omega)\nu \cdot 2^\omega \big),
 \label{eq:noisemodel1}
 \end{equation}
-where $\Omega$ is the total amount of octaves, $\psi$ the persistence (scale falloff), $N$ a generic $N$-dimensional noise function, $\sigma$ a predefined random vector that removes anisotropic effects and $\nu$ the frequency modifier. For each mode, the frequency is thus multiplied, while the overall amplitude is damped by a given persistence. In the end, we simulate a large set of bulk particles without any walls, and use the noise function to remove particles that are not in a procedural void. 
+where $\Omega$ is the total amount of octaves, $\psi$ the persistence (scale falloff), $N$ a generic $N$-dimensional noise function, $\sigma$ a predefined random vector that removes anisotropic artifacts and $\nu$ the frequency modifier. For each mode, the frequency is thus multiplied, while the overall amplitude is damped by a given persistence. In the end, we simulate a large set of bulk particles without any walls, and use the noise function to remove particles that are not in a procedural void given by a threshold $\tau$. Three examples of this model are depicted in figure \ref{fig:model_example}, where we have used $\Omega=6$ ocataves and the scale is $\nu=0.01$ and cutoff $\tau=0$. The left image depicts low persistence ($\psi = 0$), where only the first octave dominates (corresponding to large scales). The middle picture shows the same parameters with a higher persistence $(\psi = 0.5)$, where smaller scales become more dominating. In the right picture, the cutoff threshold $\tau = -0.3$.   
+
+\begin{figure*}
+\includegraphics[width=.95\textwidth]{model_examples.png}
+\caption{Examples of 3D simplex noise structures in nanoporous media. Left image: low persistence (large scale dominates), middle image: medium persistence (small scales starts dominating) and right image: high threshold (more atoms are discarded). }
+\label{fig:model_example}
+\end{figure*}
 
 
-\subsection{Simulations}
-LAMMPS $SiO_2$ simulation heated -> expand box -> cool down
-\begin{figure}
-\includegraphics[width=.45\textwidth]{pores1.png}
-%#\includegraphics[width=.5\textwidth]{pores2.eps}
-%\includepdf{ pores1.pdf }
-\caption{LAMMPS $SiO_2$ simulation.}
-\label{fig:model12}
-\end{figure}
-
-\subsection{Implementation}
-InfiniteDiffusion - nanopores. 
-Octree
 
 \subsection{Model Measure}
-In order to compare our procedural noise model with actual simulations, we define various measures that quantify the internal structure of the 
-\subsubsection{Distance-to-atom (DTA)}
-\subsubsection{Fractal Dimension}
-\subsubsection{Octree Counting Measure (OCM)}
+In order to perform data analysis on the model parameters, we developed a code that uses Monte Carlo Markov chains in order to produce samples for building the likelihood. Before doing so, we need a model measure - a quantitative method for uniquely identifying the interrnal structure of the porous media. Say something about pore distribution etc.   
 
-\subsection{Diffusion Measure}
+\subsubsection{Distance-to-atom (DTA)}
+ The Distance-To-Atom (DTA) measure is a 1D histogram that measures the average distance between any point and the nearest wall in a 3D medium. HAFREAGER SKRIV
+
+
+%\subsubsection{Fractal Dimension}
+%The fractal dimension is a ratio providing a statistical index of complexity comparing how detail in a pattern changes with the scale at which it is measured. We provide a fracal
+
+%\subsubsection{Octree Counting Measure (OCM)}
+
+%\subsection{Diffusion Measure}
+
+\subsection{Likelihood}
+The likelihood $\mathcal{L}$ of paremeters $\theta$ of a model $M(\theta)$ given outcome $x$ is defined as $\mathcal{L} (M(\theta) | x) = P( x | M(\theta))$, where P is the probability distribution. In our model, we use the $\chi^2$ test to fit our one-dimensional measure from the data $\bf d$ with our model $\bf M(\theta)$. The $\chi^2$ is defined as 
+\begin{equation}
+  \chi^2 = \sum_i \frac{ \Big(d_i - M(\theta)_i \Big)^2}{\sigma_i^2}
+\end{equation}    
+where $\sigma$ is the standard deviation. Our likelihood then becomes
+\begin{equation}
+\mathcal L \propto e^{-\chi^2}.
+\end{equation}
+For a model with $N$ free parameters, we build the full $N$-dimensional likelihood by letting random walkers map out the parameter space through the Monte Carlo Markov chain method (MCMC). For each step $M(\theta)_n$ in parameter space, we calculate the likelihood for this parameter configuration. Then, we create a new set of parameters for the next step $M(\theta)_{n+1}$ by choosing new parameters randomly from a $N$-dimensional sphere around the previous parameters. We calculate the likelihood at the new step and perform the MCMC test: Accept the new step if $\frac{\mathcal L_n}{\mathcal L_n+1} \ge 1$, or reject if the value is lower than a uniform random value $\in [0,1]$.  
+
+\subsection{Model verification}
+In order to verify our likelihood code, we perform a model verification test on a mock data set with known input values. In this example, we only use standard simplex noise with two free parameters: the persistence $\psi$ and threshold $\tau$. We simulate a data set of $?? ^3 Å$ of $1 000 000$ atoms, and perform the simplex cutoff given input parameters $\Omega=6$, $\Psi = 0.6$, $\tau=-0.05$, $\nu=0.01$. The resulting 3D structure is depicted in figure \ref{fig:mockdata}. 
+\begin{figure}
+\includegraphics[width=.45\textwidth]{model_test.png}
+\caption{Simulated mock data. }
+\label{fig:mockdata}
+\end{figure}
+
+We continue by performing a full MCMC analysis of the mock data with using a parallelised code running on a 48 core cluster using 10000 random vectors for the DTA measure function. In order to produce 300 000 samples, about 4 hours was needed. The results from the analysis can be seen in figure \ref{fig:mockdataresults}, where the right-hand image depicts the correlation between $\tau$ and $\psi$ at $r=-0.7$. The center and left image shows that the input parameters of $\tau=-0.05$(threshold) and $\psi=0.6$(persistence) are reproduced well within $1 \sigma$.
+
+\begin{figure*}
+\includegraphics[width=.99\textwidth]{mock_data_results.png}
+\caption{Results from the model validation simulation. The left-hand image displays the 2D likelihood function of $\tau$ and $\psi$, with $1$ and $2\sigma$ contours. The correlation between these parameters are $r=-0.7$. The input parameters of $\tau=-0.05$ and $\psi=0.6$ are reproduced accurately well within $1\sigma$. }
+\label{fig:mockdataresults}
+\end{figure*}
+
 
 
 \begin{figure}
-\includegraphics[width=.5\textwidth]{model1.eps}
+%\includegraphics[width=.5\textwidth]{model1.eps}
 \caption{blahblah}
 \label{fig:model12}
 \end{figure}
@@ -182,15 +222,8 @@ In order to compare our procedural noise model with actual simulations, we defin
 
 \section{Results}
 
-\subsection{Model measure}
+\subsection{Simulated data}
 
-
-\subsection{Diffusion $R^2$}
-\begin{figure}
-\includegraphics[width=.5\textwidth]{compare.png}
-\caption{Results. }
-\label{fig:model12}
-\end{figure}
 
 \section{Conclusion}
 It works! Hopefully.
