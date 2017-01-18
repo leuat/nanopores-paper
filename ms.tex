@@ -177,14 +177,19 @@ where $\Omega$ is the total amount of octaves, $\psi$ the persistence (scale fal
 
 
 \subsection{Model Measure}
-In order to perform data analysis on the model parameters, we developed a code that uses Monte Carlo Markov chains in order to produce samples for building the likelihood. Before doing so, we need a model measure - a quantitative method for uniquely identifying the interrnal structure of the porous media. Say something about pore distribution etc.   
+In order to perform data analysis on the model parameters, we developed a code that uses Monte Carlo Markov chains in order to produce samples for building the likelihood. Before doing so, we need a model measure - a quantitative method for uniquely identifying the internal structure of the porous media. This quantity should be computed for both the original data set and the one produced by our noise model. 
 
-\subsubsection{Distance-to-atom (DTA)}
- The Distance-To-Atom (DTA) measure is a 1D histogram that measures the average distance between any point and the nearest wall in a 3D medium. HAFREAGER SKRIV
+Ideally, the model measure should pick up all geometrical properties that are relevant for the physical study of interest. For instance, pore size distribution and porosity are import for studying transport in porous media (REF). One such measure is the Distance-To-Atom (DTA).
+
+\subsubsection{Distance-to-atom}
+The DTA measure is the distribution of distances between $N_r$ random points and their nearest wall atom defined by the geometry. We get a list of $N_r$ such distances which can be histogrammed. By computing this histogram for both the data and the model, we can compare the two as seen in figure \ref{fig_dta:example}. 
+
+\subsubsection{Pore size distribution}
+A common method of characterizing the geometry is the pore size distribution as first used in \cite{gelb1999pore}. It works by filling the pore space with spheres, starting with the largest possible. After each sphere, the pore space is now considered filled and we repeat this process until the next sphere has radius smaller than some $R_\text{min}$. 
 
 \begin{figure}[htb!]
 \includegraphics[width=.45\textwidth]{DTA.png}
-\caption{Distance-to-atom function for two data sets with varying persistence. The green line corresponds to a mock data set with low persistence (dominated by large-scale modes), while the blue line corresponds to high persistence (dominated by small scale modes). }
+\caption{Distance-to-atom measure for two data sets with varying persistence. The green line corresponds to a mock data set with low persistence (dominated by large-scale modes), while the blue line corresponds to high persistence (dominated by small scale modes). }
 \label{fig:dta_example}
 \end{figure}
 
