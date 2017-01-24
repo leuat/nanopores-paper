@@ -1,0 +1,253 @@
+\documentclass[aps,pre,twocolumn,letterpaper,floatfix,showpacs]{revtex4}
+\usepackage{graphicx} 
+\usepackage{amsmath,amssymb,amsfonts} 
+\usepackage{mathtools}
+\usepackage{afterpage}
+\usepackage[hidelinks]{hyperref} 
+\usepackage{epstopdf}
+\begin{document}
+\title{Transient cluster formation in sheared non-Brownian suspensions}
+\author{Kjetil Th\o gersen $^1$}
+\email{kjetil.thogersen@fys.uio.no}
+\author{Marcin Dabrowski $^{1,2}$}
+\author{Anders Malthe-S\o renssen $^1$}
+\affiliation{$^1$Department of Physics - University of Oslo\\Sem S{\ae}lands vei 24, NO-0316, Oslo, Norway  \\
+$^2$Polish Geological Institute - National Research Institute\\ Wroclaw, Poland}
+\date{\today} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+We perform numerical simulations of non-Brownian suspensions in the laminar flow regime to study the scaling behavior of particle clusters and collisions under shear. As the particle fraction approaches the maximum packing fraction, large transient clusters appear in the system. We use methods from percolation theory to discuss the cluster size distribution. We also give a scaling relation for the percolation threshold as well as system size effects through time-dependent fluctuations of this threshold and relate them to system size. System size effects are important close to the maximum packing fraction due to the divergence of the cluster length scale. We then investigate the transient nature of the clusters through characterization of particle collisions, and show that collision times exhibit scale invariant properties. We then show that particle collision times can be modeled as first passage processes.
+\end{abstract}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+Suspensions are ubiquitous in nature. They are important in fields ranging from swimming bacteria \cite{lushi2014fluid} and blood flow \cite{freund2014numerical}, to lava flows \cite{yamato2012numerical,glazner2014magmatic}, debris flows \cite{coussot1996recognition} and subsurface contaminant transport \cite{mccarthy1989subsurface}. Understanding suspensions is also important for several industrial and technological applications, e.g for the gas industry \cite{meakin2013shale,patankar2002power,kuzkin2014computer} and in microfluidics \cite{whitesides2006origins,xuan2010particle}. Since Einstein's work on the effective viscosity of dilute suspensions \cite{einstein1906eineneue,einstein1911berichtigung}, a large number of studies on particle suspensions have been performed.  In 1972, Batchelor and Green extended Einsteins expression of effective viscosity to second order \cite{batchelor1972determination}.  The model of Batchelor and Green has since been thoroughly tested experimentally for low volume fractions ($\phi<0.1$), and the rheology of dilute suspensions is now well understood \cite{ovarlez2006local}. The rheology of dense suspensions is less trivial. Several phenomenological models have been proposed, including the classical Krieger-Dougherty relation where the viscosity diverges at a maximum packing fraction $\phi_m$ \cite{krieger1959mechanism}. 
+
+A number of studies have related rheology to the interaction between close particle pairs \cite{batchelor1972determination,frankel1967viscosity,marrucci1985viscosity,iskakova2013shear,sierou2002rheology,brady1997microstructure,mills2009apparent}. Frankel and Acrivos stated that the dominant interaction mode is the compression mode of approaching particles \cite{frankel1967viscosity}, and developed a constitutive relation for effective viscosity for high particle volume fractions.  
+Marucci and Denn later pointed out that the tangential mode is dominating, but they also stated that correlated motion of over length scales larger than a single particle, i.e. the formation of particle clusters \cite{marrucci1985viscosity}. The decrease of the size of the lubrication layer between close particle distances with shear rate has also been used to demonstrate shear induced thickening \cite{iskakova2013shear}.
+Several studies have been performed that include interparticle forces. Brady et al. have performed several studies of suspension rheology of suspensions using a short range repulsive force accounting for particle roughness (e.g. \cite{brady1997microstructure,sierou2002rheology}). Recent studies have also explained discontinuous shear thickening as the sudden increase of frictional contacts with shear rate \cite{seto2013discontinuous}.  Studies have also been carried out to unify suspension and granular rheology close to the jamming threshold \cite{boyer2011unifying}, as well as to understand the rheology of suspensions of non-spherical particles \cite{mueller2009rheology}
+
+In 1979, de Gennes proposed a series of conjectures about the microstructure of sheared suspensions \cite{de1979conjectures}. Branched and highly transient particle clusters form in sheared suspensions, but there is a well defined time-independent size distribution of clusters. He also stated that an infinite cluster would appear as $\phi$ exceeds 
+a critical threshold value $\phi_c$, and that the only motion allowed by such clusters would be uniform translations and rotation, and that the divergence of the cluster correlation length follows standard percolation laws.  de Gennes' conjectures were recently tested by Gallier et al. using numerical simulations based on the fictitious domain method including frictional contacts. They found that most of de Gennes' conjectures hold, but only find weak correlation between transient spanning clusters and measured effective viscosity \cite{gallier2015percolation}.
+
+Suspension microstructure is essential to understand suspension rheology \cite{stickel2005fluid,morris2009review}. However, while dilute suspensions are fairly well understood, the relation between microstructure and rheology of dense suspensions is still lacking, and analytical treatment of microstructure evolution is complicated. The pair distribution function has been used only with limited success to relate rheology and microstructure, even though tensor descriptions of microstructure look more promising \cite{stickel2005fluid}. This calls for a different approach to describe the microstructure of suspensions.
+
+From the transient nature of cluster formation as first proposed by de Gennes \cite{de1979conjectures}, we expect the maximum cluster size to diverge as the maximum packing fraction is approached. This means that system size effects will be increasingly important for high particle volume fractions since percolation cluster can occur well before the maximum packing fraction \cite{gallier2015percolation}. Understanding the transient nature of particle contacts and clustering could therefore provide useful insights to the overall micro-structural fluctuations of particle suspensions.
+
+In this work we focus on the transient nature of cluster formation and breakup in suspensions of rigid particles in shear flow, as well as close particle interactions. The methods we use are motivated by percolation theory as well as theory of first passages. We define particles to be in contact below a length scale $\epsilon$, and the percolation threshold $\epsilon_c$ as the smallest $\epsilon$ that results in a particle cluster that spans the system. We establish a scaling relation between percolation and particle fraction, both for the mean percolation threshold $\langle \epsilon_c \rangle$ and the fluctuations in percolation threshold $\delta \epsilon_c$ which is system size dependent. As $\phi$ approaches the maximum packing fraction $\phi_m$, the percolation threshold decreases towards zero. For a system of finite size, we then expect transient percolating clusters well before the maximum packing fraction if we define particle contact with a small rim separation $r\epsilon$. We then show that particle contact times are invariant under the choice of $\epsilon$.
+
+In this paper we will use a Stokes flow description. Non-Brownian suspensions can often be considered as purely viscous materials \cite{ovarlez2006local}, i.e. the viscosity does not depend on the shear rate. Even though two particles in Stokes flow show reversible dynamics, and their trajectories are symmetric, non-Brownian suspensions show rich dynamics even at zero Reynolds number. Recent studies demonstrate chaotic particle trajectories leading to a threshold of irreversibility related to the growth of the Lyapunov exponent \cite{pine2005chaos}. Chaotic behavior can be demonstrated even for three particles settling under gravity \cite{janosi1997chaotic}, and chaotic rotation has been demonstrated for a single triaxial ellipsoid \cite{yarin1997chaotic}. This failure of time-reversibility shows that chaos is an intrinsic property of slowly sheared suspensions. 
+
+The paper is structured as follows: In section \ref{section:model_description} we introduce the finite element model we use to solve for the particle trajectories. In section \ref{section:dynamics} we first introduce a length scale $\epsilon$ that defines particle contact, we then discuss the dynamics of the system and give the scaling relations with $\epsilon$ based on percolation theory, including cluster formation, and particle collisions. We then sum up and conclude in section \ref {section:discussion}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Model description} \label{section:model_description} 
+\begin{figure}
+\includegraphics[width=.5\textwidth]{Thogersen_fig1.eps}
+\caption{Sketch of the system setup. The left and right boundaries are periodic, while the top and bottom have velocities in opposite directions to give a background shear rate $\dot \gamma$. The particle configuration is a snapshot from a simulation of $N=1024$ particles at volume fraction $\phi = 0.4$. $\epsilon = 1$. $\dot \gamma t = 30$. The colored segments are generated from a Delaunay triangulation where only segments shorter than $r(2+\epsilon)$, where $r$ is the particle radius and $\epsilon$ is a dimensionless parameter that defines contact, are kept. Here we can see that $\epsilon \geq \epsilon_c$, where $\epsilon_c$ is the smallest $\epsilon$ that gives a spanning cluster in the vertical direction. Segments that form closed triangles have a different shading to highlight the branched cluster structure.
+\label{fig:bc_sketch}}
+\end{figure}
+
+While numerous numerical techniques have been used to study particle suspensions (e.g. dissipative particle dynamics \cite{hoogerbrugge1992simulating}, lattice boltzmann methods \cite{ladd2001lattice} and lagrange multiplier ficticious domain method \cite{glowinski1999distributed}), numerical investigation of particles suspensions has until recently been dominated by studies using Stokesian dynamics simulations \cite{brady1988stokesian,brady1985rheology,ekiel2008stokesian}.
+In this study we perform direct numerical simulations using finite element method. Recent developments allows us to go to large enough strains and particle numbers to perform statistical analysis. We solve the incompressible Stokes equations. Conservation of mass yields
+ \begin{equation}
+ \nabla \cdot \vec v  = 0,
+ \end{equation}
+ where $\vec v$ is the vector field. Conservation of momentum yields
+ \begin{equation}
+ \nabla \cdot \boldsymbol \sigma = \vec 0,
+ \end{equation}
+ where $\boldsymbol \sigma$ is the stress tensor
+ \begin{equation}
+\boldsymbol \sigma = -p  \boldsymbol I +  \boldsymbol T,
+\end{equation}
+where $p$ is the pressure, $\boldsymbol I$ is the identity matrix, and
+ \begin{equation}
+\boldsymbol T = \mu \left (   \nabla \vec v + (\nabla \vec v )^T \right )
+\end{equation}
+is the deviatoric stress tensor. We use a an adaptive two-dimensional mixed finite element discretization with quadratic shape functions for the velocities and linear shape functions for the pressure (the Crouzeix-Raviart seven-node triangular element). We use a modified version of MILAMIN for efficient computation in MATLAB \cite{dabrowski2008milamin}, and Triangle for meshing \cite{shewchuk1996triangle}. For rigid particles we replace the degrees of freedom associated withthe particle boundaries with three degrees of freedom, two translational and one rotational.
+
+In this paper we study the purely hydrodynamic limit, i.e. we use no repulsive forces. In order to achieve this, special care has to be taken to spatial discretization as well as time-integration \cite{ekiel2008stokesian}. We use geometrical mesh refinement to ensure that there are at least two elements across the aperture between all close particle pairs at any time during the simulation. In this way we ensure that the velocity field is accurate between close particles. For time-integration we use the second order Runge-Kutta method. We terminate the simulation if particle overlap is detected. For dense suspensions this sets limits on the maximum strains that we can achieve. For statistical measures, it would be beneficial to have one very long run rather than ensemble averaging over multiple shorter ones, but due to computational challenges, the latter is used throughout the paper. Using no repulsive force is especially problematic for large volume fractions where spanning clusters can occur, and particle distances can get infinitesimal, and hence we can not handle this numerically for arbitrary strains. Still, we present results without any artificial repulsive force up to significant strains for small to moderate volume fractions.
+
+Additional strengths of a finite element discretization is that arbitrary domain and particle geometries are trivial to implement, and the velocity and pressure field is solved for at the same time as the particle velocities, which allows for studies of the coupling between fluid and particle motion as well as access to the stress tensor at any position in space and time. However, for simplicity we limit the study to monodisperse disks.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{System setup and dynamics} \label{section:dynamics}
+\figurename~\ref{fig:bc_sketch} shows a sketch of the system setup. The left and right boundaries are periodic, while the top and bottom boundaries have Dirichlet boundary conditions of opposite velocities setting up an average shear rate $\dot \gamma$. The system is integrated forward in time with a second order Runge Kutta method with timestep $dt = \frac{0.02}{\dot \gamma}$. We simulate the fully lubricated limit, i.e. the particles always interact through a thin fluid film.
+
+\subsection{Cluster statistics}
+\begin{figure}
+\includegraphics[width=.5\textwidth]{Thogersen_fig2a.eps}\\
+\includegraphics[width=.5\textwidth]{Thogersen_fig2b.eps}
+\caption{Top: Dependency of $\langle \epsilon_c \rangle$ on the system size $\frac{1}{N}$ and the volume fraction $\phi$. 
+\emph{Main figure:} $\langle \epsilon_c \rangle$ as a function of the volume fraction (\emph{crosses}: $x$-direction, \emph{dots}: $y$-direction). $\langle\epsilon_c\rangle$ scales with $(1-\phi/\phi_m) \left ( (\phi/\phi_m)^{-1/2} - 1 \right )$ (see text), where $\phi_m = 0.81$, in the range of volume fraction we have tested. \emph{Left inset:} System size dependency of $\langle \epsilon_c\rangle$. We find no significant system size effects. \emph{Right inset:} System size effect of the fluctuations of $\epsilon_c$, here given by the standard deviation. We find that the standard deviation scales with the system size approximately as $std(\epsilon_c) \sim N^{-1/3}$.
+Bottom: Percolation threshold $\epsilon_c$ as a function of strain (time) for $N=1024$ particles at volume fraction $\phi = 0.3$.
+\label{fig:epsilon_c_scaling}}
+\end{figure}
+
+While many models assume a roughness parameter to determine when particles are in contact, we do not have a well defined contact distance in our system since the particles are always separated by a thin fluid film.  We define particle clusters using Delaunay triangulation of the particle positions. We define define active segments of the triangulation as segments that are shorter than
+\begin{equation}
+|\vec \chi_{ij}| \leq r(2+\epsilon),
+\end{equation}
+where $|\vec \chi_{ij}|$ is the distance between the particle centers, $r$ is the particle radius and $\epsilon$ is a dimensionless distance. The graph of active segments makes up the cluster structure. This definition means that the somewhat arbitrary dimensionless distance $\epsilon$ defines wether or not a particle pair is connected. However, we will show that several clustering parameters follow classical percolation scaling laws for $\epsilon$, rendering results that are to a large degree independent of or insensitive to the choice of $\epsilon$. \figurename~\ref{fig:bc_sketch} shows a snapshot of a simulation containing 1024 particles at volume fraction $\phi = 0.4$ where we have also highlighted the cluster backbone by triangles where all segments are shorter than $r(2+\epsilon)$ to demonstrate the branched structure and the clusters. In the figure we use $\epsilon = 1$. The clusters in the system are highly transient, they stretch, compress, rotate and lead to transport of particles in the vertical direction. Particles continuously attach and detach to the clusters, so that the size and lifetime of a cluster is not trivial to define. Still, we will show that there is a unique definition of the cluster size distribution if we average in time.
+
+\subsubsection{Percolation threshold}
+If the particles were actually in contact, we would have a precise cluster definition. Since this is not the case for slowly sheared incompressible flows (without particle roughness), we need an alternative approach. We define $\epsilon_c$ as the lowest threshold at which a spanning cluster occurs. $\epsilon_c$ is then a continuos value that goes to zero if the system is truly percolating, i.e. particles are in direct contact. The maximum packing fraction is then characterized by
+\begin{equation}
+\lim_{\phi \rightarrow \phi_m} \epsilon_c(\phi) = 0
+\label{eq:jamming_eps}
+\end{equation}
+Since $\epsilon_c \rightarrow 0$ will not occur in our system (except at maximum packing), minima in $\epsilon_c$ is the best approximation we can obtain. \figurename~\ref{fig:epsilon_c_scaling} shows the percolation threshold as a function of time for $N=1024$ and $\phi = 0.4$. We see that $\epsilon_c$ varies by a factor $\sim 2$, indicating the transient nature of the clusters. 
+
+Using scaling arguments we can predict the behavior of $\langle \epsilon_c \rangle$ with $\phi$. At the maximum packing fraction $\phi_m$, the system is spanning and $\epsilon_c$ goes to zero according to equation \ref{eq:jamming_eps}
+\footnote{Note that there could be subtle differences between the isotropic maximum packing fraction and jamming when the system is anisotropic, and we do observe minor systematic differences in percolation threshold in the $x$ and $y$-direction.}.
+This means that for $\phi$ approaching $\phi_m$, we expect that
+\begin{equation}
+\epsilon_c \sim (1-\frac{\phi}{\phi_m})^\alpha,
+\end{equation}
+where $\alpha < 0$ is an exponent that could in principle depend on $\phi$. For small fractions we expect a different scaling behavior. In very dilute systems, we can assume that the configuration does not depend on the particle radius, so that changing $\phi$ is equivalent to reducing $r$ for all particles. Then
+\begin{equation}
+r(2+\epsilon_c) \approx \text{constant}
+\end{equation}
+as $r$ is reduced. Using the relation $r \sim \phi^\frac{1}{2}$, we find that 
+\begin{equation}
+\epsilon_c \sim \phi^{-\frac{1}{2}} - 1
+\end{equation}
+One scaling relation that gives the expected behavior in both limits is
+\begin{equation}
+\epsilon_c \sim (1-\frac{\phi}{\phi_m})^\alpha \left ((\frac{\phi}{\phi_m} )^{-\frac{1}{2}}-1 \right )
+\end{equation}
+\figurename~\ref{fig:epsilon_c_scaling} shows $\langle \epsilon_c \rangle$ as a function of $\phi$. We obtain a good fit using $\alpha = 1$.
+\subsubsection{Cluster size distribution}
+\begin{figure}
+\includegraphics[width=.5\textwidth]{Thogersen_fig3.eps}
+\caption{Cluster number density scaled with traditional percolation parameters. N = 1024, $\phi = 0.3$. Scaled with universal percolation exponents $\tau = \frac{187}{91}$, the exponent of the power law distribution at the measured percolation threshold $\epsilon_c = 1.34$, and $\sigma = \frac{36}{91}$, which describes how the cutoff in cluster size diverges as the threshold is increased towards the percolation threshold. The inset shows the unscaled distributions. All data is equilibrated for $\gamma = 20$.
+\label{fig:cluster_number_density_epsilon_collapse}}
+\end{figure}
+
+We define the cluster size $s$ as the number of particles that form a connected structure. We then measure the cluster number density $n(s,\epsilon)$ for different values of $\epsilon$. The cluster size distribution is highly dependent on the choice of the threshold parameter $\epsilon$.  This is expected if we look at the system as a percolation system where we have a percolation threshold $\epsilon_c(\phi)$ that depends on the volume fraction $\phi$. \figurename~\ref{fig:cluster_number_density_epsilon_collapse} shows the cluster number density for 1024 particles at $\phi = 0.3$ for various $\epsilon$, where the largest clusters are removed because they could in principle be spanning. As $\epsilon$ approaches the percolation threshold $\epsilon_c$, the cutoff in cluster size diverges and we get a power law distribution of cluster sizes, i.e. all clusters of all sizes exist. We obtain a decent collapse of the data using the universal percolation scaling exponents $\sigma = 36/91$, which describes the cutoff in the cluster size distribution as $\epsilon_c$ is approached, and  $\tau = 187/91$, which is the power law exponent of the cluster size distribution at the percolation threshold \cite{stauffer1994introduction}. However, even longer time-series are needed to obtain enough statistics to reach a firm conclusion on this matter.
+
+Using the combination of the universal scaling exponents $\tau$ and $\sigma$ for the cluster size distribution as well as the scaling relation between $\langle \epsilon_c \rangle$ and $\phi$, we can uniquely determine the cluster size distribution given $\phi$ and $\epsilon$. The fluctuations are also well described through $\delta \epsilon_c \sim N^{-\frac{1}{3}}$. With this result established, we now turn to the particle collisions.
+
+\subsection{Collision statistics}
+\begin{figure}
+\includegraphics[width=.5\textwidth]{Thogersen_fig4.eps}
+\caption{Trajectory of two-particle collisions. The first particle position is used as a reference frame. In incompressible flow, particles will not actually touch. The blue circle shows the inaccessible region of radius $2r$, while the outer green circle shows the cutoff $\epsilon$ used to define collisions. Notice the existence of closed trajectories. The figure was generated from simulations of two particles in simple shear with $dt = \frac{0.02}{\dot \gamma}$ with a second order Runge-Kutta integrator, and similar resolution as in the rest of the simulations presented in this paper.
+\label{fig:two_particle_interaction}}
+\end{figure}
+\begin{figure*}[p]
+\includegraphics[width=.9\textwidth,trim=1.5cm 1.5cm 1.5cm 1.25cm, clip=true]{Thogersen_fig5.eps}
+\caption{Example collisions with $\epsilon = 2$ from a simulation of $N=1024$ particles at volume fraction $\phi = 0.1$ in simple shear demonstrating two different collision regimes. \emph{Top left:} Examples of collisions with collision time $\Delta \gamma \leq 5$. \emph{Top right:} Collisions with collision time $\Delta \gamma \geq 50$. The bottom panels show the distance between the two particles as a function of $\gamma$. The line colors correspond to the line colors in the two top figures.
+\label{fig:excursion_examples}}
+\end{figure*}
+\begin{figure*}
+\begin{minipage}[t]{.49\textwidth}
+\includegraphics[width=\textwidth]{Thogersen_fig6.eps}
+\caption{Average excursion $\langle d_{ij} \rangle$ scaled by the minimum excursion $\langle d_{ij} \rangle_m$. Dashed lines show the standard deviation. A decrease of $\epsilon$ pushed the mean excursion from fairly parabolic towards semi-circular. All data is from simulations of $N = 1024$ particles.
+\label{fig:mean_excursion}}
+\end{minipage}
+\hfill \hfill
+\begin{minipage}[t]{.49\textwidth}
+\includegraphics[width=\textwidth]{Thogersen_fig7.eps}
+\caption{Probability density of collision times $C(\Delta \gamma)$. The curve is invariant under $\epsilon$ and $N$, but has a weak dependence on $\phi$. Long collision times scale as $\Delta \gamma ^{-3}$, but we expect a transition to $\Delta \gamma ^{-3/2}$ for even larger times (see text and \figurename~\ref{fig:return_time_random_walk}. Solid grey lines show results from two particles with $\epsilon = 1$ where the initial relative positions show radial symmetry (dashed) and uniformly distributed in $y$ at $-r(2+\epsilon)$ (solid).
+\label{fig:contact_time_distribution}}
+\end{minipage}
+\end{figure*}
+Since we are dealing with an incompressible fluid in the laminar regime and smooth particle surfaces, the particles are not touching, they are only interacting through the fluid phase. This means that we need to define what a collision is based on a length scale that is not related to any physical quantities. However, as we will discuss in this section, many results will not be sensitive to this choice.
+
+\subsubsection{Collision trajectories}
+In the previous section we already defined a length scale that we will continue to use. We define two particles to be colliding when they are within the distance $|\vec \chi_{ij}| \leq r(2+\epsilon)$. \figurename~\ref{fig:two_particle_interaction} shows the collision between two particles in simple shear, when they are the only particles present in the system. The black lines shows trajectories of the first particle in the reference frame of the second particle. The blue region is inaccessible since the particles have the same radius $r$. The green region is the region defining the collision between the two particles. Note that there are two different types of trajectories. The open trajectories, and the closed trajectories, first described by Batchelor and Green in 1972 \cite{batchelor1972hydrodynamic}, that will stay in contact indefinitely as long as no additional  particles are present that could disturb the trajectory. 
+
+The collisions in suspensions are more complex due to the interaction between more than two particles. Data from a simulation of $N = 1024$ particles at volume fraction $\phi = 0.1$ is shown in \figurename~\ref{fig:excursion_examples}.  From the figure one can clearly distinguish two different regimes, one for the short duration collisions, and one for the long duration collisions. Short duration collisions follow open trajectories similar to those demonstrated in \figurename~\ref{fig:two_particle_interaction} with some deviation due to simultaneous interaction with other particles. The long duration collisions follow trajectories more similar to the closed trajectories in \figurename~\ref{fig:two_particle_interaction}. We interpret the long duration collisions as particles that are pushed into closed orbits by random interaction with multiple particles, and then back to open trajectories before they escape. This is visible in the top right panel of \figurename~\ref{fig:excursion_examples} where one can see that the trajectories complete several loops before they escape.
+
+To quantify the trajectory shape, we introduce the excursion profile which is a common measure in first passage random walks \cite{baldassarri2003average,colaiori2004average}. We reduce the problem to one dimension by only considering the radial distance $d_{ij}$ and velocity $v_{r,{ij}}$ between colliding particles. Collisions that are ongoing at the start or end of the simulations are not counted. A few examples of such excursions are shown in the two bottom panels of \figurename~\ref{fig:excursion_examples}. The short collisions exhibit close to parabolic shapes, while the longer collisions fluctuate in $d_{ij}$. To quantify the shape of the excursions, we scale the time axis of the individual excursions by the excursion time $\Delta \gamma$, and average. \figurename~\ref{fig:mean_excursion} shows the mean excursion shape for various $\phi$ and $\epsilon$ scaled by the maximum vale of the curves. As expected from the symmetry of Stokes equations, the average excursions are symmetric in time. Decreasing $\epsilon$ pushes the shape from parabolic towards semi-circular, which is related to the hydrodynamic forces of very close particles. Increasing $\phi$ has the same effect. However, the effects is not particularly large over the range we have tested ($\epsilon \in [0.1, 2]$ and $\phi \in [0.1, 0.4]$).
+
+\subsubsection{Collision times}
+Another quantity of interest is the distribution of collision times, i.e. how long do particle contacts last.  \figurename~\ref{fig:contact_time_distribution} shows the distribution of contact times for various $\epsilon$ and $\phi$. As previously, collisions that are ongoing at the start or end of the simulations are not counted. The distribution of collision times has the surprising feature that it is scale invariant, i.e. independent of $\epsilon$ for a wide range of $\epsilon$ tested. It is also only weakly dependent on the particle volume fraction $\phi$. The short collision times are dominated by open trajectories where the probability density scales as $\Delta \gamma$ with the most likely coillsion time of order $\Delta \gamma \approx 1$. The short collision times are well described by the hydrodynamic interaction between an isolated particle pair. Long collision times, however, exhibit a different scaling; we observe a scaling exponent $\approx \Delta \gamma ^{-3}$. 
+
+In an attempt to explain the scaling behavior of \figurename~\ref{fig:contact_time_distribution}, we turn to theory of first passages.  It follows from straightforward scaling arguments that the first passage distribution of a random walk is scale invariant under the condition that the standard deviation of the velocity over the mean value of the velocity is kept constant, i.e. $\delta v / \langle v \rangle = \text{constant}$. This is consistent with the standard deviation and mean velocity measured for collusions in our data. The results are shown in \figurename~\ref{fig:std_mean_coll}, where we see that equal $\phi$ have equal ratios $\delta v_r / \langle v_r \rangle$.
+
+\begin{figure}
+\includegraphics[width=.5\textwidth]{Thogersen_fig8.eps}
+\caption{The ratio between the standard deviation $\delta v_r$ and mean radial velocity $\langle v_r \rangle$ for colliding particles. Only particles within distance $r(2+\epsilon)$ contribute to the curves. Equal $\phi$ (equal colors) collapse onto the same lines for different $\epsilon$, consistent with scale invariance of the return time of random walks.
+\label{fig:std_mean_coll}}
+\end{figure}
+
+The first passage time distribution of a random walk is a power law distribution with exponent $\beta = -\frac{3}{2}$ \cite{redner2001guide}, which does not match the long time limit observed in our data. One possible explanation for this dicrepancy is long time correlations of the collision velocities. We would then expect a transition from $\beta = -3$ to $\beta = -\frac{3}{2}$ in the very long time limit. The reason we would not see this is because our time-series are not long enough.  Even though collisions that long are very unlikely, the scaling behavior for long collision times is important to determine wether the mean collision time diverges or not because the first moment of a power law distribution diverges for $\beta \textgreater -2$.
+
+\begin{figure}[h!]
+\includegraphics[width=.5\textwidth]{Thogersen_fig9.eps}
+\caption{\emph{Main figure:} First passage probability density for the random walk model with data from $N = 1024$, $\phi = 0.1$ and $\epsilon = 2$.  The features from the finite element data are recovered, and a $\beta = -\frac{3}{2}$ scaling is found for large $\Delta \gamma$. The gray line shows the boundaries of \figurename~\ref{fig:contact_time_distribution}. \emph{Top inset:} Mean and standard deviation of $v_r$ from finite element data. The dashed lines show the parameterized curves that are used as inputs for the random walk. \emph{Bottom inset:} Frequency spectrum of $v_r$ from finite element data where we have subtracted $\langle v_r \rangle$. Only data from collisions with $\Delta \gamma > 50$ is used. The dashed line shows the parameterized curve used in the random walk model. Note the transition from pink ($1/f^a$) noise at high frequencies to white noise (constant) at low frequencies.
+\label{fig:return_time_random_walk}}
+\end{figure}
+
+\subsubsection{First passage random walk model}
+We attempt to model the collision time distribution using correlated random walks. The first thing we need to do is to parameterize the parameters that we need to input to the random walk. They are the mean radial velocity during a collision and the standard deviation, as well as the self correlation of each walk. For the self correlation we use the power spectrum because we will use the same power spectrum to generate random walks. We perform a discrete fourier transform of $v_r$ for all collisions that last longer than $\Delta \gamma = 50$. This is because the short collisions are not long enough to get reliable frequency spectra. The insets in \figurename~\ref{fig:return_time_random_walk} shows $\delta v_r$, $\langle v_r \rangle$ and the frequency spectrum $P_{v_r} (1/\gamma)$ for a single run with $N=1024$, $\phi = 0.1$ and $\epsilon = 2$, as well as fits used as inputs for the random walk model. $\delta v_r$ and $\langle v_r \rangle$ show the correlations on the time scale of order $\delta \gamma \sim 20$. The frequency spectrum shows power law noise at high frequencies and a transition to white noise for low frequencies. 
+
+We construct our random walk in fourier space that satisfies the measured power spectrum. Each collision velocity $v_r$ follows a power spectrum made from uniform random weights scaled with $P_{v_r} (1/\gamma)$. $v_r(\gamma)$ is then obtained from an inverse discrete fourier transform. We then multiply with the measured standard deviation and add the mean value that we observed. The resulting collision time distribution $C$ is plotted in \figurename~\ref{fig:return_time_random_walk}. The correspondence with our data from finite element simulations is very good, and the simplified model also predicts a crossover from $\beta = -3$ to $\beta = -\frac{3}{2}$ at very large times. This transition from pink noise at high frequencies to white noise at low frequencies is responsible the power law behavior with $\beta = -\frac{3}{2}$ in $C(\Delta \gamma)$ for $\Delta \gamma \gtrsim 10^2$. The good correspondence between the collision time probability density and the return time of the correlated random walk suggests that our interpretation of the collisions as particles that are pushed into what would in the two particle case be closed orbits, and are then subject to random interactions with additional particles in the suspensions is justified. Details of the effect of $P_{v_r}$, $\delta v_r$ and $\langle v_r \rangle$ are discussed in appendix \ref{appendix:random_walk}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Discussion and conclusion} \label{section:discussion}
+In this paper we have introduced a two-dimensional finite element model to study particle suspensions in simple shear at zero Reynolds number. We use geometrical mesh refinement in the regions between close particles to assure that lubrication forces are modeled accurately. This allows us to avoid the use of repulsive forces that are commonly implemented to avoid particle overlaps. This does set constraints on the $\gamma$ we can reach for high particle volume fractions, but we have reached $\gamma$ large enough to perform statistical analysis when combined with ensemble averaging. 
+
+The particles form transient clusters that that rotate and transport particles in the vertical direction. To study the cluster statistics we introduced a dimensionless contact length $\epsilon$ and investigated how particle collision statistics depend on this length.  The cluster number density follows classical percolation theory, and scales with the universal scaling exponents $\tau$ and $\sigma$. While the percolation threshold fluctuates in time with the fluctuations scaling with system size as $N^{-\frac{1}{3}}$, the time-averaged cluster number density is well defined. Even though de Gennes proposed that spanning clusters are directly related to an increase in effective viscosity we have not found direct correlation between $\epsilon_c(\gamma)$ and $\mu_\text{eff}(\gamma)$. This is supported by a recent study by Gallier et al. \cite{gallier2015percolation}, where they find that although spanning clusters can support more stress, the correlation with fluctuations in effective viscosity and the occurence of transient spanning clusters is weak. We intend to elaborate on the relation between structure and effective viscosity in a separate publication.
+
+Two particles in simple shear exhibit to different collision trajectories; open trajectories and closed trajectories. For particle collisions where many particles are present and can change the trajectories of a particle pair, this distinction is still visible. Short collisions are similar to the open collision trajectories involving only two particles, while we interpret long collisions as particles pushed into what would in the two particle case be closed trajectories. The trajectories are then subject to random interactions with other particles, until they are pushed out of the closed trajectory. This interpretation is supported by the close resemblance between the collision time probability density and the return time of a correlated random walk. Using $\langle v_r \rangle$, $\delta v_r$ as well as the power spectrum of each collision trajectory, we reproduced the collision time probability density. We also predict that the long time behavior scales as a power law with exponent $\beta = -\frac{3}{2}$, but we have not reached strains large enough to confirm this prediction. $\beta = -\frac{3}{2}$ in the long time limit indicates that the mean collision time diverges since the first moment of a power law distribution with exponent $\beta > -2$ diverges. Due to the conservation of the ratio $\delta v_r / \langle v_r \rangle$ with changing $\epsilon$, the distribution of collision time is scale invariant. This is again due to the self affine properties of $v_r$, that are visible in the power spectrum $P_{v_r}$. While lubrication forces are slightly different in three dimensions, we believe that our results are qualitatively valid also in three dimensions.
+
+Our results on the collision time probability density highlight some of the challenges we face with regards to long time series using finite element simulations of particle suspensions. The interpretation of contacts as first passage processes implies that it is quite likely to find very close particle pairs in sheared suspensions. The probability of finding such pairs would scale with the total number of contacts, i.e. $N$ and $\phi$, as well as total strain $\gamma$. Since close particle pairs are difficult to treat numerically due to the large variation in element size and the singularity of the zero spacing between particles, this puts severe constraints on the likelihood of running large systems to high strains. To overcome this difficulty, approaches such as upscaling of the lubrication layer between close particles or short range repulsive forces are necessary. 
+
+Several studies have been performed using repulsive forces motivated by friction, electrostatic repulsion or van der Waals forces (see e.g. \cite{brady1997microstructure,sierou2002rheology,morris2009review,seto2013discontinuous}). Even short range repulsive forces will break the symmetry of the two-particle interaction in \figurename~\ref{fig:two_particle_interaction}. We do not expect short range repulsive forces to change the short collision trajectories significantly, but the long collisions will be altered, and if the repulsive force is large enough, closed trajectories will cease to exist.
+
+An interesting question is wether simple random walk models can be used to predict the transient properties of the cluster size distribution. Given the probability density of particle collision times, one could imagine combining it with a collision rate could lead to predictions of the cluster size distribution using a purely statistical approach. However, we leave this open for possible future investigations. Understanding the microstructure of particle suspensions, and in particular, the transient nature of close particle contacts is an important step towards understanding the relation between suspension microstructure and effective properties, including fluctuations. In particular, close to the maximum packing fraction, the fluctuations in the percolation threshold show that transient percolation clusters appear. Gallier et al. found only a weak correlation between spanning clusters and instantaneous effective viscosity \cite{gallier2015percolation}, but it could be that systems even closer with volume fractions very close to jamming are needed to observe significant effect. It could also be the case that there are other properties of the micro-structure that govern fluctuations in the effective viscosity. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Ackowledgements}
+K.T. acknowledges support from VISTA, a basic research program funded by Statoil, conducted in close collaboration with The Norwegian Academy of Science and Letters.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+
+\section{Details of the random walk model} \label{appendix:random_walk}
+\begin{figure}
+\includegraphics[width=.5\textwidth]{Thogersen_fig10.eps}
+\caption{
+Measurements of the return time distribution for random walks following equations \ref{eq:P_vr}, \ref{eq:mean_vr} and \ref{eq:delta_vr}.
+\emph{Top left:} Effect of $a$ on the return time distribution $C(\Delta \gamma)$. $\langle v_r \rangle = 0$, $\delta v_r = \text{constant}$.
+\emph{Top right:} Effect of $b$ on the return time distribution $C(\Delta \gamma)$. $\langle v_r \rangle = 0$, $\delta v_r = \text{constant}$.
+\emph{Bottom left:} Effect of $c$ on the return time distribution $C(\Delta \gamma)$. $a = 1$, $b = 12.5$, $\frac{\delta v_r}{\langle v_r \rangle}= \frac{2}{5}$.
+\emph{Bottom right:} Effect of $d$ on the return time distribution $C(\Delta \gamma)$. $a = 1$, $b = 12.5$, $\frac{\delta v_r}{\langle v_r \rangle} = \frac{2}{5}$.
+\label{fig:random_walk_param_study}}
+\end{figure}
+In this section we give the details of the random walk model used in the discussion of the collision times. The parameterized curves we use at inputs are 
+\begin{equation}
+P_{v_r}(1/ \gamma) \sim \frac{1}{(1+\frac{b}{\gamma})^{a}},
+\label{eq:P_vr}
+\end{equation}
+\begin{equation}
+\frac{\langle v_r \rangle}{\langle v_r(0) \rangle} = \frac{5}{3}e^{-\gamma/c} -\frac{2}{3}e^{-\gamma/d},
+\label{eq:mean_vr}
+\end{equation}
+and
+\begin{equation}
+\frac{\delta v_r}{\langle v_r(0) \rangle} = \frac{2}{5}\gamma^2 e^{-\gamma} + \frac{1}{4}e^{-\gamma/40} + \frac{1}{20},
+\label{eq:delta_vr}
+\end{equation}
+where we have used $a = 1.1$, $b = 12.5$, $c = 1$ and $d = 8$ in the model in the main text. The random walk is constructed using uniform random weights scaled with $P_{v_r}$. In addition, we use a cutoff frequencies $1/\gamma > 5$. We then perform an inverse discrete fourier transform, scale it to get the correct standard deviation$\frac{\delta v_r}{\langle v_r(0) \rangle}$ and add $\frac{\langle v_r \rangle}{\langle v_r(0) \rangle}$ to get $v_r$.
+
+\figurename~\ref{fig:random_walk_param_study} shows how $a$, $b$, $c$ and $d$ control the shape of $C(\Delta \gamma)$, where we have performed a series of random walks and measured $C(\Delta \gamma)$. $a$ and $b$ control the behavior at long times, while $c$ and $d$ control the short time behavior. $a$ controls the fractal dimension of the walk at high frequencies, while $b$ controls the crossover from a self affine walk to white noise. $c$ shifts the maximum point of $C(\Delta \gamma)$, while $d$ controls the shape of the peak. It is the combination of these parameters that make up \figurename~\ref{fig:return_time_random_walk}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliography{Thogersen_main_text.bbl}
+
+\end{document}  
