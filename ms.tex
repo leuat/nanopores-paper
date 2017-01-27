@@ -15,7 +15,7 @@
 
 
 \begin{document}
-\title{Generating realistic nanopores using procedural methods}
+\title{Structural replication of nanoporous media using procedural noise}
 %\author{A. Hafreager, N. Groeneboom, A. Malthe-S\oe renssen$^1$}
 \email{anders.hafreager@fys.uio.no}
 \author{Anders Hafreager $^{1}$} 
@@ -27,6 +27,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract} 
+In this paper, we aim to develop a method for producing statistically correct simulations of nanoporous media without the use of conventional Molecular Dynamics Simulator (MDS). In short, the proposed model is a binary function that returns either true if the input position is in a void / pore, or false if within a wall. By using procedural noise, we are not restricted to generating media within a limited box, as the noise functions is continuous on all scales. It is therefore possible to validated pores at theoretically arbitrary range. In addition, this method is extremely fast, requiring very little computational power to calculate whether a particle is within a pore or not. After presenting such a model, we choose a method to measure the structural properties of nanoporous media that are created either through regular methods (e.g. LAMMPS) or with our method. The measure we selected is the radial pore size distribution $g(r)$, which is regarded as the de-facto standard method for capturing the structural properties of porous media. Using this measure, we define a full likelihood framework for estimating model parameters given any data set, and continue by validating our own framework by analysing procedural noise data sets with known input parameters. Finally, we perform a full likelihood analysis of silica $SiO^2$ data set simulated in LAMMPS, and show that our model correctly reproduces several of the internal properties of the data set, including $g(r)$, porosity and surface area.     
+
 \end{abstract} 
  
 \maketitle
@@ -34,6 +36,8 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
+
+
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat turpis vel mollis accumsan. Etiam eleifend magna vel quam porta, sed porta nibh placerat. Sed in faucibus risus. Duis suscipit tincidunt leo, nec laoreet leo elementum elementum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed eros risus, convallis sit amet turpis a, dapibus accumsan quam. Donec fringilla rhoncus turpis, quis ultrices odio vulputate elementum. Cras nec viverra urna. Phasellus laoreet tortor sed est sagittis laoreet. Nullam a volutpat ex.
 
 Mauris vestibulum sit amet libero eget facilisis. Vivamus a nunc sed felis ultrices convallis luctus et mauris. Sed tincidunt mauris nunc, vehicula placerat eros faucibus quis. Morbi egestas, nisi quis luctus dignissim, mauris odio pulvinar tellus, non efficitur risus erat vel nunc. Cras vel felis magna. Mauris rutrum magna a interdum sodales. Nam tempor, diam non sodales tristique, nulla ipsum eleifend dui, non aliquam felis tellus id enim. Donec eget nulla leo.
@@ -45,7 +49,12 @@ Nullam ultrices, velit sed venenatis ultrices, risus urna ultricies magna, at pr
 Proin ornare nulla id tristique placerat. Integer nec elementum tellus. Cras at tempus lectus. Cras lorem est, ornare id condimentum vitae, scelerisque eu lectus. Aenean libero arcu, consequat vel sagittis eget, sagittis ut neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean nec quam sodales, mollis est sit amet, vulputate turpis. Praesent tempus diam eu sem laoreet finibus. Nulla finibus, sapien vel lobortis ultricies, mauris ipsum aliquet urna, quis rutrum sapien dui id ipsum. Quisque sodales ex sapien, ac egestas lacus suscipit et. Suspendisse accumsan rhoncus tristique. Pellentesque ut eros lectus. Praesent viverra sit amet odio nec vulputate. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla molestie metus vitae libero vulputate, at interdum enim tempus.
 
 \section{Method}
+\todo{her står det nå det samme som i abstract}
+In this paper, we aim to develop a method for producing statistically correct simulations of nanoporous media without the use of conventional Molecular Dynamics Simulator (MDS). In short, the proposed model is a binary function that returns either true if the input position is in a void / pore, or false if within a wall. By using procedural noise, we are not restricted to generating media within a limited box, as the noise functions is continuous on all scales. It is therefore possible to validated pores at theoretically infinite range. In addition, this method is extremely fast, requiring very little computational power to calculate whether a particle is within a pore or not. 
 
+After presenting such a model, we choose a method to measure the structural properties of nanoporous media that are created either through regular methods (e.g. LAMMPS \cite{plimpton1995fast}) or with our method. The measure we selected is the radial pore size distribution $g(r)$, which is regarded as the de-facto standard method for capturing the structural properties of porous media. 
+
+Using this measure, we define a full likelihood framework for estimating model parameters given any data set, and continue by validating our own framework by analysing procedural noise data sets with known input parameters. Finally, we perform a full likelihood analysis of  
 
 \subsection{Procedural noise}
 \label{sec:perlin}
@@ -85,25 +94,9 @@ computational steps, scales better in higher ($\ge 3$) dimensions and has fewer
 anisotropic properties. 
 
 \subsubsection{Properties of procedural noise}
-Standard Perlin noise is known for having several anisotropic features
-\citep{lagae:2010}. Perlin noise also gives rise to a ``textile''
-pattern in the $x$ and $y$-directions, which is evident from the upper
-left part of figure \ref{fig:noise}, depicting 2D Perlin noise in
-a single octave. The upper-right part shows the same node for Simplex noise,
-with less obvious patterns. However, when combining several octaves,
-as depicted in the two lower parts, these anisotropic patterns tend to cancel
-out. In any case, for observations of weak gravitational lensing, these anisotropies would occur on much smaller 
-scales than the typical resolution. 
-In addition, we have calculated the statistical distributions for Perlin and simplex noise
-with $\sigma = 0.2$, and have plotted the results in figure \ref{fig:properties}.
-Each procedural noise method has distributions that are close to normal, 
-but with some intrinsically shifted sigma and mean. 
-
-
-
 \begin{figure}
 \includegraphics[width=.5\textwidth]{noise.eps}
-\caption{Perlin noise (left) vs simplex noise (right). Note the
+\caption{Perlin noise (left) versus simplex noise (right). Note the
   straight x-y pattern in the single upper Perlin mode and the less
   anisotropic simplex mode. Lower part: combining octaves tend
   to remove these patterns.}
@@ -118,6 +111,21 @@ but with some intrinsically shifted sigma and mean.
   near-Gaussian, but slightly different distributions.}
 \label{fig:properties}
 \end{figure}
+Standard Perlin noise is known for having several anisotropic features
+\citep{lagae:2010}. Perlin noise also gives rise to a ``textile''
+pattern in the $x$ and $y$-directions, which is evident from the upper
+left part of figure \ref{fig:noise}, depicting 2D Perlin noise in
+a single octave. The upper-right part shows the same node for Simplex noise,
+with less obvious patterns. However, when combining several octaves,
+as depicted in the two lower parts, these anisotropic patterns tend to cancel
+out. In any case, for observations of weak gravitational lensing, these anisotropies would occur on much smaller 
+scales than the typical resolution. 
+In addition, we have calculated the statistical distributions for Perlin and simplex noise
+with $\sigma = 0.3$, and have plotted the results in figure \ref{fig:properties}.
+Each procedural noise method has distributions that are close to normal, 
+but with some asymmetrical properties. 
+
+
 
 \subsection{Multiple octaves: creating patterns}
 \label{sec:octaves}
@@ -137,37 +145,13 @@ In its simplest case, summing directly
 over the octaves with amplitude $1/k$ results in 
 \begin{equation}
 \label{eq:perlinlinear}
- \Phi(\vec x) = \sum_k \frac{1}{k} P( k\vec x), 
+ \Phi(\vec x) = \sum_k \frac{1}{k} P( 2k\vec x), 
 \end{equation}
 and produces an 2D procedural noise pattern depicted in the lower
-part of figure \ref{fig:noise}. 
-
-
-
-
-%\ref{burganos1998gas}
-
-%\begin{figure}
-%\includegraphics[width=.45\textwidth]{pores2.png}
-%#\includegraphics[width=.5\textwidth]{pores2.eps}
-%\includepdf{ pores1.pdf }
-%\caption{Model with best-fit parameters}
-%\label{fig:model12}
-%\end{figure}
-
-
-%\subsection{Simulations}
-%LAMMPS $SiO_2$ simulation heated -> expand box -> cool down
-%\begin{figure}
-%\includegraphics[width=.45\textwidth]{pores1.png}
-%%#\includegraphics[width=.5\textwidth]{pores2.eps}
-%%\includepdf{ pores1.pdf }
-%\caption{LAMMPS $SiO_2$ simulation.}
-%\label{fig:model12}
-%\end{figure}
+part of figure \ref{fig:noise}. Finally, since simplex noise both scales better with higher dimensions and produces less asymmetric effects, we choose to use this noise method over regular Perlin noise in our method.  
 
 \subsection{Model}
-In this paper, we are interested in developing a model using Simplex noise to reproduce nanoporous structures that are as statistically close to actual simulations of porous media. For a given data set and a model, we wish to estimate the parameters that best represent the data. This is performed through a full likelihood analsys, where we in addition validate the model by comparing the radial pore size distribution $g(r)$, porosity and surface area of the system.  
+In this paper, we are interested in developing a model using Simplex/Perlin noise to reproduce nanoporous structures that are as statistically close to actual simulations of porous media. For a given data set and a model, we wish to estimate the parameters that best represent the data. This is performed through a full likelihood analysis, where we in addition validate the model by comparing the radial pore size distribution $g(r)$, porosity and surface area of the system.  
 
 \begin{figure*}
 \includegraphics[width=.95\textwidth]{model_examples.png}
@@ -179,7 +163,7 @@ We construct a generic sum over procedural noise octaves with the expression:
   M_1(\vec x) = \sum_{\omega=0}^{\Omega} \psi^{\omega -1}   N\big((\vec x + \sigma \cdot \omega)\nu \cdot 2^{\omega-1} \big),
 \label{eq:noisemodel1}
 \end{equation}
-where $\Omega$ is the total amount of octaves, $\psi$ the persistence (scale falloff), $N$ a generic $N$-dimensional noise function, $\sigma$ a predefined random vector that removes anisotropic artifacts and $\nu$ the frequency modifier representing the initial largest scales in the model. For each mode, the frequency is thus multiplied, while the overall amplitude is damped by a given persistence. In the end, we simulate a large set of bulk particles without any walls, and use the noise function to remove particles that are not in a procedural void given by a threshold $\tau$. Three examples of this model are depicted in figure \ref{fig:model_example}, where we have used $\Omega=6$ ocataves and the scale is $\nu=0.01$ and cutoff $\tau=0$. The left image depicts low persistence ($\psi = 0.0$), where only the first octave dominates (corresponding to large scales). The middle picture shows the same parameters with a higher persistence $(\psi = 0.5)$, where smaller scales become more dominating. In the rightmost picture, the effect of the cutoff threshold $\tau = -0.3$ is shown.   
+where $\Omega$ is the total amount of octaves, $\psi$ the persistence (scale falloff), $N$ a generic $N$-dimensional noise function, $\sigma$ a predefined random vector that removes anisotropic artefacts and $\nu$ the frequency modifier representing the initial largest scales in the model. For each mode, the frequency is thus multiplied, while the overall amplitude is damped by a given persistence. In the end, we simulate a large set of bulk particles without any walls, and use the noise function to remove particles that are not in a procedural void given by a threshold $\tau$. Three examples of this model are depicted in figure \ref{fig:model_example}, where we have used $\Omega=6$ octaves and the scale is $\nu=0.01$ and cut-off $\tau=0$. The left image depicts low persistence ($\psi = 0.0$), where only the first octave dominates (corresponding to large scales). The middle picture shows the same parameters with a higher persistence $(\psi = 0.5)$, where smaller scales become more dominating. In the rightmost picture, the effect of the cut-off threshold $\tau = -0.3$ is shown.   
 
 
 \subsection{Model Measure}
@@ -210,7 +194,7 @@ In this paper, we choose to use the radial pore size distribution $g(r)$ as defi
 %\subsection{Diffusion Measure}
 
 \subsection{Likelihood}
-The likelihood $\mathcal{L}$ of paremeters $\theta$ of a model $M(\theta)$ given outcome $x$ is defined as $\mathcal{L} (M(\theta) | x) = P( x | M(\theta))$, where P is the probability distribution. In our model, we use the $\chi^2$ test to fit our one-dimensional measure from the data $\bf d$ with our model $\bf M(\theta)$. Pearson's $\chi^2$ is defined as 
+The likelihood $\mathcal{L}$ of parameters $\theta$ of a model $M(\theta)$ given outcome $x$ is defined as $\mathcal{L} (M(\theta) | x) = P( x | M(\theta))$, where P is the probability distribution. In our model, we use the $\chi^2$ test to fit our one-dimensional measure from the data $\bf d$ with our model $\bf M(\theta)$. Pearson's $\chi^2$ is defined as 
 \begin{equation}
   \chi^2 = \sum_i \frac{ \Big(d_i - M(\theta)_i \Big)^2}{M(\theta)_i^2},
 \end{equation}    
@@ -226,9 +210,9 @@ For a model with $N$ free parameters, we build the full $N$-dimensional likeliho
 \caption{Simulated mock data used for the initial model testing analysis. Input parameters are $\nu=0.03$,$\tau=-0.02$ and $\psi=0.6$.}
 \label{fig:mockdata}
 \end{figure}
-In order to verify our likelihood code, we perform a model verification test on a mock data set with known input values. In this example, we only use standard simplex noise with three free parameters: the persistence $\psi$, threshold $\tau$ and scale $\nu$. We simulate a data set of $159 ^3 Å$ of $1 000 000$ atoms, and perform the cutoff given input parameters $\Omega=3$, $\Psi = 0.6$, $\tau=-0.2$, $\nu=0.03$. The resulting 3D structure is depicted in figure \ref{fig:mockdata}. 
+In order to verify our likelihood code, we perform a model verification test on a mock data set with known input values. In this example, we only use standard simplex noise with three free parameters: the persistence $\psi$, threshold $\tau$ and scale $\nu$. We simulate a data set of $159 ^3 Å$ of $1 000 000$ atoms, and perform the cut-off given input parameters $\Omega=3$, $\Psi = 0.6$, $\tau=-0.2$, $\nu=0.03$. The resulting 3D structure is depicted in figure \ref{fig:mockdata}. 
 
-We continue by performing a full MCMC analysis of the mock data with using a parallelised code running on a 48 core cluster. In order to produce 300 000 samples, about 48 hours was needed. The results from this analysis can be seen in figure \ref{fig:mockdataresults_pts}, where the upper panel depicts the marginalised 1D posteriors while the lower shows the marginalised 2D posteriors. The center and left image shows that the input parameters of $\tau=-0.2$(threshold), $\psi=0.6$(persistence) and $\nu=0.03$ are all reproduced well within $1 \sigma$.
+We continue by performing a full MCMC analysis of the mock data with using a parallelized code running on a 48 core cluster. In order to produce 300 000 samples, about 48 hours was needed. The results from this analysis can be seen in figure \ref{fig:mockdataresults_pts}, where the upper panel depicts the marginalised 1D posteriors while the lower shows the marginalised 2D posteriors. The centre and left image shows that the input parameters of $\tau=-0.2$(threshold), $\psi=0.6$(persistence) and $\nu=0.03$ are all reproduced well within $1 \sigma$.
 
 
 \begin{figure*}
@@ -253,7 +237,7 @@ We continue by performing a full MCMC analysis of the mock data with using a par
 \label{fig:porous_results1}
 \end{figure*}
 
-We now wish to perform a parameter fitting analysis on realistic simulated nanoporous media. Using LAMMPS \cite{plimpton1995fast}, we simulate a $100^3$ \AA box of 100K $SiO^2$ silica particles at an initial temperature of $4500 K$, using the Vashishta-potential. After an initial period, we expand the box to $159^3 \AA$ and start cooling until quenching is achieved at about $300K$. The resulting nanoporous media is depicted in figure \ref{fig:sio2data}, with a porosity of $75\%$.
+We now perform a parameter fitting analysis on realistic simulated nanoporous media. Using LAMMPS \cite{plimpton1995fast}, we simulate a $100^3$ \AA box of 100K $SiO^2$ silica particles at an initial temperature of $4500 K$, using the Vashishta-potential. After an initial period, we expand the box to $159^3 \AA$ and start cooling until quenching is achieved at about $300K$. The resulting nanoporous media is depicted in figure \ref{fig:sio2data}, with a porosity of $75\%$.
 
 With the model described in \ref{eq:noisemodel1}, we perform a full likelihood analysis of the data set with the three free parameters $\tau$, $\nu$ and $\psi$ using $g(r)$ as the measure. The resulting marginalised posteriors are depicted in figure \ref{fig:porous_results1}, with best-fit parameters $\tau=-0.2$, $\psi=0.8$ and $\nu=0.3$ is extracted from the full 3D likelihood. We also display the radial pore size distribution $g(r)$ for the input data set, a best-fit parameter data set and a bad-fit data set in figure \ref{fig:gofr1}, to illustrated the sensitivity of $g(r)$ given the model parameters. Note that we are not able to accurately reproduce the structures of the $SiO^2$ $g(r)$ with our current model, but hope that we during future work will be able to produce another model that provides a better fit with this measure. 
 
@@ -270,15 +254,15 @@ Finally, we depict a comparison of the actual simulated input $SiO^2$ data set t
 \label{fig:porous_vs_model}
 \end{figure}
 
-The porosity of the input $SiO^2$ data set is $75\%$, while the best-fit data set has porosity $77\% \pm 3 \%$, depending on the random seed. In addition, the surface area of the original data set was $\tilde 29 000 \AA^2$, while the best-fit data shows similar values with surface are ranging betweem $\tilde 28 000 \AA^2$ and $\tilde 30 000 \AA^2$.
+The porosity of the input $SiO^2$ data set is $75\%$, while the best-fit data set has porosity $77\% \pm 3 \%$, depending on the random seed. In addition, the surface area of the original data set was $\tilde 29 000 \AA^2$, while the best-fit data shows similar values with surface are ranging between $\tilde 28 000 \AA^2$ and $\tilde 30 000 \AA^2$.
 
 \subsection{Some notes on the results}
-It is worth to note that since we are chiefly interested in obtaining a set of parameters that reproduces a statistical correct representation of the input data, we are relatively free to choose parameters as desired. In the previous analysis, we selected a best fit threshold value of $\tau=-0.2$, but from the width of the likelihood it is clear that nearby parameters would also be suitable. However, the surface area is strongly correlated with this value, so even slight deviations (e.g. $\delta \tau = 0.05$) yields a relatively large change in surface area. 
+It is worth to note that since we are chiefly interested in obtaining a set of parameters that reproduces a statistical correct representation of the input data, we are relatively free to choose parameters as desired. In the previous analysis, we selected a best fit threshold value of $\tau=-0.2$, but from the width of the likelihood it is clear that nearby parameters would also be suitable. However, the surface area is strongly correlated with this value, so even slight deviations (e.g. $\Delta \tau = 0.05$) yields a relatively large change in surface area. 
 
 In addition, we do not claim that this model accurately reproduces the pore structure observed in nanoporous simulations, as is evident from the radial pore size distribution shown in figure \ref{fig:gofr1}.
 
 
- 
+
 %persistence : 0.875111019125
 %scale : 0.036638
 %threshold : -0.236784875   78% porosity
@@ -287,14 +271,18 @@ In addition, we do not claim that this model accurately reproduces the pore stru
 
 
 \section{Conclusion}
-In this paper, we have proposed a novel method for generating a simple kind of nanoporous media using procedural methods, namely Simplex noise. We have developed tools for creating such porous materials, and also estimating model parameters given data. We have shown that it is possible to recreate 
-
+In this paper, we have proposed a novel method for generating a simple kind of nanoporous media using procedural methods, namely Simplex noise. We have developed tools for creating such porous materials, and also estimating model parameters given data. We have shown that it is possible through a full likelihood analysis to reproduce the input parameters of a simulated model. In addition, we performed an analysis on a simulated $159^3 \AA$ data set of $SiO^2$, and explain that while porosity and surface area corresponds well between the model and data, the radial pore size distribution $g(r)$ show that the current model does not exactly reproduce correct data. However, we do not claim that the current model should do so yet, since we have chosen the simplest kind of summation with regards to procedural noise modes. 
 
 \subsection{Future work}
+In this paper, we have only considered the simplest kind of procedural noise: a simple sum over modes with threshold cut-off $\tau$, scale fall-off persistence $\psi$ and initial scale $\nu$. We have also seen that, even through both porosity and surface area accurately reproduced, there are features in the radial pore size distribution $g(r)$ that are not fully captured with the current model. This is evident from the images of the simulated structure seen in \ref{fig:porous_vs_model}, where the connecting nearly one-atom thin walls are difficult to reproduce with the current model. However, as procedural noise exert properties closely related to that of fractals, it is possible to extend the number of parameters and define new models with very different properties. Some examples of these models are depicted in figure \ref{fig:future_models}, where the left- and centre images show a new model with two new parameters (offset and gain), while the rightmost panel shows a simulation where the scale $\nu$ is itself being perturbed by procedural noise, yielding strong circular asymmetric patterns.   
+
+Another immediate application would be to estimate model parameters given actual observations of porous media. This would enable us to estimate new parameters such as instrumental noise, deviations from symmetry (yielding asymmetric properties) and  pureness of samples. In addition, by analysing just a few samples and producing an accurate statistical model, we are able to produce an arbitrary amount of statistically correct samples, free from instrumental noise and artefacts. 
+
+A final key analysis would be to compare properties such as percolation through finite-element simulations of gas/liquid flow through our simulated structures, in addition to exerting shear forces, and comparing with actual simulated data from e.g. LAMMPS. 
 
 \begin{figure*}
 \includegraphics[width=1\textwidth]{future_models.png}
-\caption{Example of future models. Left panel: A multifractal model with thin surfaces and large pores. Center panel: a multifractal with cave-like structures. Right panel: A model with strong asymmetric noise. }
+\caption{Example of future models. Left panel: A multi-fractal model with thin surfaces and large pores. Centre panel: a multi fractal with cave-like structures. Right panel: A model with strong asymmetric noise. }
 \label{fig:future_models}
 \end{figure*}
 

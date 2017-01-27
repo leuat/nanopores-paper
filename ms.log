@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.1.24)  24 JAN 2017 21:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.1.24)  26 JAN 2017 16:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -445,16 +445,21 @@ LaTeX Info: Redefining \nameref on input line 17.
 \@outlinefile=\write3
 \openout3 = `ms.out'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 32.
+LaTeX Font Info:    Try loading font information for U+msa on input line 30.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 32.
+LaTeX Font Info:    Try loading font information for U+msb on input line 30.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+)
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no ¥ in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no ¥ in font cmbx10!
+ [1{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 Package epstopdf Info: Source file: <noise.eps>
 (epstopdf)                    date: 2016-02-16 15:08:21
 (epstopdf)                    size: 2304387 bytes
@@ -463,137 +468,128 @@ Package epstopdf Info: Source file: <noise.eps>
 (epstopdf)                    size: 249514 bytes
 (epstopdf)             Command: <repstopdf --outfile=noise-eps-converted-to.pdf
  noise.eps>
-(epstopdf)             \includegraphics on input line 105.
+(epstopdf)             \includegraphics on input line 98.
 Package epstopdf Info: Output file is already uptodate.
 
-<noise-eps-converted-to.pdf, id=95, 1027.84pt x 1111.15125pt>
+<noise-eps-converted-to.pdf, id=89, 1027.84pt x 1111.15125pt>
 File: noise-eps-converted-to.pdf Graphic file (type pdf)
 
 <use noise-eps-converted-to.pdf>
-Package pdftex.def Info: noise-eps-converted-to.pdf used on input line 105.
+Package pdftex.def Info: noise-eps-converted-to.pdf used on input line 98.
 (pdftex.def)             Requested size: 255.0pt x 275.66777pt.
 
-Overfull \hbox (9.0pt too wide) in paragraph at lines 105--106
+Overfull \hbox (9.0pt too wide) in paragraph at lines 98--99
  [][] 
  []
 
-<noise_comparison.png, id=96, 578.16pt x 433.62pt>
+<noise_comparison.png, id=90, 578.16pt x 433.62pt>
 File: noise_comparison.png Graphic file (type png)
  <use noise_comparison.png>
-Package pdftex.def Info: noise_comparison.png used on input line 114.
+Package pdftex.def Info: noise_comparison.png used on input line 107.
 (pdftex.def)             Requested size: 255.0pt x 191.24992pt.
 
-Overfull \hbox (9.0pt too wide) in paragraph at lines 114--116
+Overfull \hbox (9.0pt too wide) in paragraph at lines 107--109
  [][] 
  []
-
-<model_examples.png, id=99, 4818.0pt x 1606.0pt>
-File: model_examples.png Graphic file (type png)
- <use model_examples.png>
-Package pdftex.def Info: model_examples.png used on input line 173.
-(pdftex.def)             Requested size: 484.49844pt x 161.49161pt.
 
 [2 <./noise-eps-converted-to.pdf>]
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 183.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 127.
 
 
-LaTeX Warning: A float is stuck (cannot be placed) on input line 183.
+LaTeX Warning: A float is stuck (cannot be placed) on input line 127.
 
 
 Class revtex4 Warning: Deferred float stuck during \clearpage processing.
 
+<model_examples.png, id=112, 4818.0pt x 1606.0pt>
+File: model_examples.png Graphic file (type png)
+ <use model_examples.png>
+Package pdftex.def Info: model_examples.png used on input line 157.
+(pdftex.def)             Requested size: 484.49844pt x 161.49161pt.
 
-Package natbib Warning: Citation `plimpton1995fast' on page 3 undefined on inpu
-t line 191.
-
-<model_test.png, id=117, 1606.0pt x 1606.0pt>
+[3 <./noise_comparison.png>] <model_test.png, id=129, 1606.0pt x 1606.0pt>
 File: model_test.png Graphic file (type png)
- <use model_test.png>
-Package pdftex.def Info: model_test.png used on input line 225.
+
+<use model_test.png>
+Package pdftex.def Info: model_test.png used on input line 209.
 (pdftex.def)             Requested size: 229.49844pt x 229.49452pt.
 Missing character: There is no Ã in font cmr10!
 Missing character: There is no … in font cmr10!
-
-<mock_data_results_pts.png, id=120, 7227.0pt x 3613.5pt>
+ [4 <./model_examples.png> <./model_test.png>]
+<mock_data_results_pts.png, id=144, 7227.0pt x 3613.5pt>
 File: mock_data_results_pts.png Graphic file (type png)
 
 <use mock_data_results_pts.png>
-Package pdftex.def Info: mock_data_results_pts.png used on input line 235.
+Package pdftex.def Info: mock_data_results_pts.png used on input line 219.
 (pdftex.def)             Requested size: 504.9028pt x 252.41946pt.
 
-<results_porous_full.png, id=121, 7227.0pt x 3613.5pt>
+<results_porous_full.png, id=145, 7227.0pt x 3613.5pt>
 File: results_porous_full.png Graphic file (type png)
 
 <use results_porous_full.png>
-Package pdftex.def Info: results_porous_full.png used on input line 251.
+Package pdftex.def Info: results_porous_full.png used on input line 235.
 (pdftex.def)             Requested size: 504.9028pt x 252.41946pt.
 
 
-Package natbib Warning: Citation `plimpton1995fast' on page 3 undefined on inpu
-t line 256.
+LaTeX Warning: Command \r invalid in math mode on input line 240.
 
 
-LaTeX Warning: Command \r invalid in math mode on input line 256.
+LaTeX Warning: Reference `fig:sio2data' on page 5 undefined on input line 240.
 
-
-LaTeX Warning: Reference `fig:sio2data' on page 3 undefined on input line 256.
-
-[3 <./noise_comparison.png>] <gofr_plot.png, id=139, 1097.0586pt x 435.7881pt>
+<gofr_plot.png, id=150, 1097.0586pt x 435.7881pt>
 File: gofr_plot.png Graphic file (type png)
-
-<use gofr_plot.png>
-Package pdftex.def Info: gofr_plot.png used on input line 262.
+ <use gofr_plot.png>
+Package pdftex.def Info: gofr_plot.png used on input line 246.
 (pdftex.def)             Requested size: 280.50156pt x 111.4204pt.
 
-Overfull \hbox (34.50156pt too wide) in paragraph at lines 262--263
+Overfull \hbox (34.50156pt too wide) in paragraph at lines 246--247
  [][] 
  []
 
-<comparison.png, id=141, 1606.0pt x 1606.0pt>
+<comparison.png, id=152, 1606.0pt x 1606.0pt>
 File: comparison.png Graphic file (type png)
  <use comparison.png>
-Package pdftex.def Info: comparison.png used on input line 268.
+Package pdftex.def Info: comparison.png used on input line 252.
 (pdftex.def)             Requested size: 229.49844pt x 229.49452pt.
 
 
-LaTeX Warning: Command \r invalid in math mode on input line 273.
+LaTeX Warning: Command \r invalid in math mode on input line 257.
 
 
-LaTeX Warning: Command \r invalid in math mode on input line 273.
+LaTeX Warning: Command \r invalid in math mode on input line 257.
 
 
-LaTeX Warning: Command \r invalid in math mode on input line 273.
+LaTeX Warning: Command \r invalid in math mode on input line 257.
 
-[4 <./model_examples.png> <./model_test.png>]
-<future_models.png, id=153, 4818.0pt x 1606.0pt>
+
+LaTeX Warning: Command \r invalid in math mode on input line 274.
+
+<future_models.png, id=156, 4818.0pt x 1606.0pt>
 File: future_models.png Graphic file (type png)
  <use future_models.png>
-Package pdftex.def Info: future_models.png used on input line 296.
+Package pdftex.def Info: future_models.png used on input line 284.
 (pdftex.def)             Requested size: 510.0pt x 169.99504pt.
 
-(./ms.bbl [5 <./mock_data_results_pts.png>]
-Underfull \hbox (badness 3000) in paragraph at lines 17--29
+[5] (./ms.bbl
+Underfull \hbox (badness 3000) in paragraph at lines 22--34
  \OT1/cmr/m/n/9 Com-puter Graph-ics Fo-rum \OT1/cmr/bx/n/9 29\OT1/cmr/m/n/9 , 2
 579 (2010), URL
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 17--29
+Underfull \hbox (badness 10000) in paragraph at lines 22--34
  []$\OT1/cmtt/m/n/9 http : / / onlinelibrary . wiley . com / doi / 10 . 1111 / 
 j .
  []
 
 )
-
-Package natbib Warning: There were undefined citations.
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 322.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 322.
-[6 <./results_porous_full.png> <./gofr_plot.png>] [7 <./comparison.png> <./futu
-re_models.png>] (./ms.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 322.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 322.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 310.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 310.
+ [6 <./mock_data_results_pts.png>] [7 <./results_porous_full.png> <./gofr_plot.
+png>] [8 <./comparison.png> <./future_models.png>] (./ms.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 310.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 310.
 Package rerunfilecheck Info: File `ms.out' has not changed.
 (rerunfilecheck)             Checksum: 0AB9E1A257800800F70061F07AE3A748;959.
 
@@ -607,12 +603,12 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right .
  ) 
 Here is how much of TeX's memory you used:
  9229 strings out of 493014
- 132203 string characters out of 6133351
- 248721 words of memory out of 5000000
- 12594 multiletter control sequences out of 15000+600000
+ 132209 string characters out of 6133351
+ 249719 words of memory out of 5000000
+ 12593 multiletter control sequences out of 15000+600000
  13895 words of font info for 54 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,7n,39p,1117b,477s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,7n,39p,1588b,345s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></
@@ -635,10 +631,10 @@ t/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2016/texmf-dist/
 fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2016/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmtt9.pfb></usr/local/texlive/2016/texmf-dist/font
 s/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on ms.pdf (7 pages, 20437400 bytes).
+Output written on ms.pdf (8 pages, 20438566 bytes).
 PDF statistics:
- 260 PDF objects out of 1000 (max. 8388607)
- 211 compressed objects within 3 object streams
- 42 named destinations out of 1000 (max. 500000)
+ 270 PDF objects out of 1000 (max. 8388607)
+ 220 compressed objects within 3 object streams
+ 43 named destinations out of 1000 (max. 500000)
  174 words of extra memory for PDF output out of 10000 (max. 10000000)
 

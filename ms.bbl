@@ -12,6 +12,11 @@
 \providecommand{\bibinfo}[2]{#2}
 \providecommand{\eprint}[2][]{\url{#2}}
 
+\bibitem[{\citenamefont{Plimpton}(1995)}]{plimpton1995fast}
+\bibinfo{author}{\bibfnamefont{S.}~\bibnamefont{Plimpton}},
+  \bibinfo{journal}{Journal of computational physics}
+  \textbf{\bibinfo{volume}{117}}, \bibinfo{pages}{1} (\bibinfo{year}{1995}).
+
 \bibitem[{\citenamefont{Lagae et~al.}(2010)\citenamefont{Lagae, Lefebvre, Cook,
   DeRose, Drettakis, Ebert, Lewis, Perlin, and Zwicker}}]{lagae:2010}
 \bibinfo{author}{\bibfnamefont{A.}~\bibnamefont{Lagae}},
@@ -38,11 +43,5 @@
   \bibinfo{author}{\bibfnamefont{K.}~\bibnamefont{Gubbins}},
   \bibinfo{journal}{Langmuir} \textbf{\bibinfo{volume}{14}},
   \bibinfo{pages}{2097} (\bibinfo{year}{1998}).
-
-\bibitem[{\citenamefont{Gelb and Gubbins}(1999)}]{gelb1999pore}
-\bibinfo{author}{\bibfnamefont{L.~D.} \bibnamefont{Gelb}} \bibnamefont{and}
-  \bibinfo{author}{\bibfnamefont{K.}~\bibnamefont{Gubbins}},
-  \bibinfo{journal}{Langmuir} \textbf{\bibinfo{volume}{15}},
-  \bibinfo{pages}{305} (\bibinfo{year}{1999}).
 
 \end{thebibliography}
