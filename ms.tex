@@ -6,6 +6,7 @@
 \usepackage{afterpage}
 \usepackage[hidelinks]{hyperref} 
 \usepackage{epstopdf}
+\usepackage{siunitx}
 \usepackage{color}
 \definecolor{Blue}{rgb}{0.1,0.1,1.0} 
 \definecolor{Magenta}{rgb}{1.0,0.1,0.5} 
@@ -47,7 +48,7 @@ Procedural generation of physical structures have several advantages over conven
 
 In this paper, we aim to investigate whether procedural methods are suitable for producing statistically correct 3D physical structures, focusing on nanoporous media. In a sense, we are combining well-known methods from computer games and real-time graphics-oriented software with experimental observations and simulations. Procedural methods for automated generation of computer game content have been around since the early 1980's, and in those early days algorithms were less advanced, often yielding plain, simple geometrical structures. Nowadays, almost every single computer game produced will contain some level of automated generated content, from textures to level design to landscapes and gameplay. 
 
-We do not claim that procedural noise methods completely reproduces all structural properties of nanoporous silica, but show that our approach can be used to efficiently create materials that are structurally similar to simulations. Naturally, this all depends on the statistics used for comparing the two models, which in this case is based on the pair correlation function $g(r)$. 
+We do not claim that procedural noise methods completely reproduces all structural properties of nanoporous silica, but show that our approach can be used to efficiently create materials that are structurally similar to simulations. Naturally, this all depends on the statistics used for comparing the two models, which in this case is based on the radial distribution function $g(r)$ (RDF). 
 \todo{Nevne at kjemi naturligvis ikke vil være riktig siden antall naboer per atom ikke er riktig. }
 %\section{Method}
 \section{Procedural content generation}
@@ -154,7 +155,7 @@ part of figure \ref{fig:noise}. Finally, since simplex noise both scales better 
 
 
 \section{Model}
-In this paper, we are interested in developing a model using simplex noise to reproduce nanoporous structures that are as statistically close to actual simulations of porous media. For a given data set and a model, we wish to estimate the parameters that best represent the data. This is performed through a full likelihood analysis, where we in addition validate the model by comparing the radial distribution function $g(r)$, porosity and surface area of the system. The simulated system is confined to a cube of size $159 \AA^3$, but since the procedural noise function is continuous on all scales, the box could be of arbitrary size. 
+In this paper, we are interested in developing a model using simplex noise to reproduce nanoporous structures that are as statistically close to actual simulations of porous media. For a given data set and a model, we wish to estimate the parameters that best represent the data. This is performed through a full likelihood analysis, where we in addition validate the model by comparing the radial distribution function $g(r)$, porosity and surface area of the system. The simulated system is confined to a cube of size $\SI{159}{\angstrom^{3}}$, but since the procedural noise function is continuous on all scales, the box could be of arbitrary size. 
 
 \begin{figure*}
 \includegraphics[width=.95\textwidth]{model_examples.png}
@@ -172,9 +173,9 @@ where $\Omega$ is the total amount of octaves, $\psi$ the persistence (scale fal
 \subsection{Model Measure}
 In order to perform data analysis on the model parameters, we developed a code that uses Monte Carlo Markov chains in order to produce samples for building the likelihood. Before doing so, we need a model measure - a quantitative method that characterizes the internal structure of the porous media. This quantity should be computed for both the original data set and the one produced by our noise model. 
 
-Ideally, the model measure should pick up all geometrical properties that are relevant for the physical study of interest. For instance, pore size distribution and porosity are import for studying transport in porous media. In this paper, we choose to use the radial distribution function $g(r)$ as defined and implemented in LAMMPS \cite{plimpton1995fast}. The $g(r)$ (or pair correlation function) describes how density varies as a function of distance from a reference particle. Hereafter, $g_d(r)$ denotes the RDF calculated from simulated or experimental data, while $g_{M(\bar \theta)}(r)$ represents the RDF based on the procedural noise model $M(\bar \theta)$, where $\bar \theta$ are the set of model parameters. 
+Ideally, the model measure should pick up all geometrical properties that are relevant for the physical study of interest. For instance, transport in porous media heavily depends on the pore size distribution and porosity, whereas chemical reactons are sensitive to surface area. \todo{referanser, malthe?} In this paper, we choose to focus on the radial distribution function $g(r)$ as defined and implemented in LAMMPS \cite{plimpton1995fast}. $g(r)$ describes how density varies as a function of distance from a reference particle, picking up both the intramolecular and intermolecular structure. We have chosen to ignore the short range contributions of $g(r)$ since the pore geometry does not depend on the intramolecular structure of SiO$_2$, but only the density variations at larger distances. Hereafter, $g_d(r)$ denotes the RDF calculated from simulated or experimental data, while $g_{M(\bar \theta)}(r)$ represents the RDF based on the procedural noise model $M(\bar \theta)$, where $\bar \theta$ are the set of model parameters. 
 
-The method used for calculating porosity of a media is defined as in \cite{gelb1998characterization}, and we obtain the surface area of a porous media by using marching cubes triangulation to sum the surface area of the triangles. 
+The method used for calculating porosity of a media is defined as in \cite{gelb1998characterization}, and we obtain the surface area of a porous media by using marching cubes triangulation to sum the surface area of the generated triangles. As discussed in \cite{gelb1998characterization}, the definition of surface area is ill-defined in atomic simulations, because a definition of pore space is needed. In the marching cubes triangulation, we generate a voxelized grid, the scalar field, with values being the distance from the voxel center to the nearest atom. The isovalue threshold defining the surface is chosen to be \SI{2}{\angstrom}, large nough to have a dense pore matrix, but small enough to have most of the available pore space defined as such. The important note here is that the same definition of surface is being used in all compared systems. 
 
 \todo{skriv litt mer om hvorfor vi velger g(r)}
 
@@ -222,7 +223,7 @@ Finally, we obtain the posterior $P(\bar \theta | d) \propto \mathcal L$ by buil
 
 
 \section{Results}
-We now turn our attention to applying the MCMC framework on two kinds of data. First, we wish to test and verify the code by performing a full data analysis on mock data with known input parameters. This enables us to investigate the posterior distribution, and determine whether any potential problems could arise with the likelihood landscape, such as radom walkers trapped in local minima. We then continue with a full analysis of simulated SiO2 data, and see whether the resulting best-fit parameter data set is consistent with the SiO2 data set. 
+We now turn our attention to applying the MCMC framework on two kinds of data. First, we wish to test and verify the code by performing a full data analysis on mock data with known input parameters. This enables us to investigate the posterior distribution, and determine whether any potential problems could arise with the likelihood landscape, such as radom walkers trapped in local minima. We then continue with a full analysis of simulated SiO$_2$ data, and see whether the resulting best-fit parameter data set is consistent with the SiO$_2$ data set. 
 
 \subsection{Model verification: Parameter estimation of mock data}
 \begin{figure}[htb!]
@@ -242,7 +243,7 @@ Note that there seems to be no problems with the posterior distribution in terms
 \label{fig:mockdataresults_pts}
 \end{figure*}
 
-\subsection{Parameter estimation of simulated SiO2 silica}
+\subsection{Parameter estimation of simulated nanoporous silica}
 %\begin{figure}
 %\includegraphics[width=.49\textwidth]{sio_porous.png}
 %\caption{Simulated silica created with LAMMPS. The box is $159^3 \AA$, with $100 000$ particles, having been created by cooling an expanding system until quenching was achieved. Note the similarities between the pores here and in figure \ref{fig:mockdata}.}
@@ -250,23 +251,25 @@ Note that there seems to be no problems with the posterior distribution in terms
 %\end{figure}
 \begin{figure*}
 \includegraphics[width=.99\textwidth]{results_porous_full.png}
-\caption{Results from the analysis of a simulated $159^3$ \AA SiO2 nanoporous data set. The upper panel displays the marginalised 1D posteriors for each parameter, while the lower panel depicts the marginalised 2D posteriors. Best fit parameters from the maximum 3D likelihood suggest $\tau=-0.2$, $\psi=0.8$ and $\nu=0.3$.}
+\caption{Results from the analysis of a simulated $159^3$ \AA SiO$_2$ nanoporous data set. The upper panel displays the marginalised 1D posteriors for each parameter, while the lower panel depicts the marginalised 2D posteriors. Best fit parameters from the maximum 3D likelihood suggest $\tau=-0.2$, $\psi=0.8$ and $\nu=0.3$.}
 \label{fig:porous_results1}
 \end{figure*}
 
-We now perform a parameter fitting analysis on realistic simulated nanoporous media. Using LAMMPS \cite{plimpton1995fast}, we simulate a $100^3\AA$  box of 100K SiO2 silica particles at an initial temperature of $4500 K$, using the Vashishta-potential. After an initial period, we expand the box to $159^3 \AA$ and start cooling until quenching is achieved at about $300K$. The resulting nanoporous media is depicted on the right side in figure \ref{fig:porous_vs_model}, with a porosity of $75\%$. \todo{Skrive mer om lagingen?}
+We now perform a parameter fitting analysis on realistic simulated nanoporous media. Using LAMMPS \cite{plimpton1995fast} and the Vashishta-potential \cite{vashishta1990interaction}, we simulate system consisting of $14^3$ betacristobalite unit cells of SiO$_2$, corresponding to system size of approximately \SI{100}{\angstrom}. The temperature is then increased to \SI{4500}{\kelvin} using NVT integration. After an initial period, we expand the box to \SI{159}{\angstrom} to achieve a porosity $\phi=0.75$. Then, the system is quenched by setting the temperature to \SI{300}{\kelvin}, resulting in the nanoporous media on the right side in figure \ref{fig:porous_vs_model}. By choosing a different seed for the initial velocities, it is easy to produce other samples.
 
-With the model described in equation \ref{eq:noisemodel1}, we perform a full likelihood analysis of the data set with the three free parameters $\tau$, $\nu$ and $\psi$ using $g(r)$ as the measure. The resulting marginalised posteriors are depicted in figure \ref{fig:porous_results1}, with best-fit parameters $\tau=-0.2$, $\psi=0.8$ and $\nu=0.3$ is extracted from the full 3D likelihood. We also display the RFD $g(r)$ for the input data set, a best-fit parameter data set and a bad-fit data set in figure \ref{fig:gofr1}, to illustrated the sensitivity of $g(r)$ given the model parameters. Note that we are not able to accurately reproduce the structures of the SiO2 $g(r)$ with our current model, but hope that we during future work will be able to produce another model that provides a better fit with this measure. 
+With the model described in equation \ref{eq:noisemodel1}, we perform a full likelihood analysis of the data set with the three free parameters $\tau$, $\nu$ and $\psi$ using $g(r)$ as the measure. The resulting marginalised posteriors are depicted in figure \ref{fig:porous_results1}, with best-fit parameters $\tau=-0.2$, $\psi=0.8$ and $\nu=0.3$ is extracted from the full 3D likelihood. We also display $g(r)$ for the input data set, a best-fit parameter data set and a bad-fit data set in figure \ref{fig:gofr1}, to illustrate the sensitivity of $g(r)$ given the model parameters. Note that we are not able to accurately reproduce the structures of the SiO$_2$ $g(r)$ with our current model, but hope that we during future work will be able to produce another model that provides a better fit with this measure. 
+
+Note that the surface atoms are not in chemical equilibrium since some neighbors of a surface atom might have been removed. In order to use the generated geometry in molecular dynamics, one would need either noble gas atoms which may be stable, or apply passivation step.
 
 \begin{figure}
 \includegraphics[width=.45\textwidth]{gofr_plot.png}
-\caption{The RDF $g(r)$ for three data sets: the simulated SiO2 input data set (red), the best-fit parameter model (blue) and a random low-fit parameter model (green). }
+\caption{$g(r)$ for three data sets: the simulated SiO$_2$ input data set (red), the best-fit parameter model (blue) and a random low-fit parameter model (green). \todo{Bytt denne figuren med VMD sin beregning. Normaliseringen vår er gal.}}
 \label{fig:gofr1}
 \end{figure}
-Finally, we depict a comparison of the actual simulated input SiO2 data set together with a representation of the best-fit parameters in figure \ref{fig:porous_vs_model}   
+Finally, we depict a comparison of the actual simulated input SiO$_2$ data set together with a representation of the best-fit parameters in figure \ref{fig:porous_vs_model}   
 \begin{figure}
 \includegraphics[width=.45\textwidth]{comparison.png}
-\caption{Right side: A realisation of the best-fit parameters $\tau=-0.2$, $\psi=0.8$ and $\nu=0.3$. Left side: Simulated SiO2 input data set used for parameter estimation. }
+\caption{Right side: A realisation of the best-fit parameters $\tau=-0.2$, $\psi=0.8$ and $\nu=0.3$. Left side: Simulated SiO$_2$ input data set used for parameter estimation. }
 \label{fig:porous_vs_model}
 \end{figure}
 
@@ -279,7 +282,7 @@ It is worth to note that since we are chiefly interested in obtaining a set of p
 In addition, we do not claim that this model accurately reproduces the pore structure observed in nanoporous simulations, as is evident from the RDF shown in figure \ref{fig:gofr1}.
 
 \subsection{$g(r)$ variation}
-We also calculated the variation in the RDF $g(r)$ given initial conditions on both our model and simulated data. In terms of the data, the variation is attributed as the initial velocities of the particles in the LAMMBS simulation. For the model, it corresponds to the random seed. We found that varying these initial conditions have negligible effect on the calculation of $g(r)$.
+We also calculated the variation in the $g(r)$ given initial conditions on both our model and simulated data. In terms of the data, the variation is attributed as the initial velocities of the particles in the LAMMPS simulation. For the model, it corresponds to the random seed. We found that varying these initial conditions have negligible effect on the calculation of $g(r)$.
 
 
 %persistence : 0.875111019125
@@ -291,7 +294,7 @@ We also calculated the variation in the RDF $g(r)$ given initial conditions on b
 
 \section{Conclusion}
 \todo{konklusjon maa renskrives}
-In this paper, we have proposed a novel method for generating a simple kind of nanoporous media using procedural methods, namely simplex noise. We have developed tools for creating such porous materials, and also estimating model parameters given data. We have shown that it is possible through a full likelihood analysis to reproduce the input parameters of a simulated model. In addition, we performed an analysis on a simulated $159^3 \AA$ data set of SiO2, and explain that while porosity and surface area corresponds well between the model and data, the RDF $g(r)$ shows that the current model does not exactly reproduce correct data. However, we do not claim that the current model should do so yet, since we have chosen the simplest kind of summation with regards to procedural noise modes. 
+In this paper, we have proposed a novel method for generating a simple kind of nanoporous media using procedural methods, namely simplex noise. We have developed tools for creating such porous materials, and also estimating model parameters given data. We have shown that it is possible through a full likelihood analysis to reproduce the input parameters of a simulated model. In addition, we performed an analysis on a simulated $159^3 \AA$ data set of SiO$_2$, and explain that while porosity and surface area corresponds well between the model and data, the $g(r)$ shows that the current model does not exactly reproduce correct data. However, we do not claim that the current model should do so yet, since we have chosen the simplest kind of summation with regards to procedural noise modes. 
 
 \subsection{Future work}
 In this paper, we have only considered the simplest kind of procedural noise: a simple sum over modes with threshold cut-off $\tau$, scale fall-off persistence $\psi$ and initial scale $\nu$. We have also seen that, even through both porosity and surface area accurately reproduced, there are features in the RDF that are not fully captured with the current model. This is evident from the images of the simulated structure seen in figure \ref{fig:porous_vs_model}, where the connecting nearly one-atom thin walls are difficult to reproduce with the current model. However, as procedural noise exert properties closely related to that of fractals, it is possible to extend the number of parameters and define new models with very different properties. Some examples of these models are depicted in figure \ref{fig:future_models}, where the left- and centre images show a new model with two new parameters (offset and gain), while the rightmost panel shows a simulation where the scale $\nu$ is itself being perturbed by procedural noise, yielding strong circular asymmetric patterns.   
