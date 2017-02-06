@@ -155,7 +155,7 @@ part of figure \ref{fig:noise}. Finally, since simplex noise both scales better 
 
 
 \section{Model}
-In this paper, we are interested in developing a model using simplex noise to reproduce nanoporous structures that are as statistically close to actual simulations of porous media. For a given data set and a model, we wish to estimate the parameters that best represent the data. This is performed through a full likelihood analysis, where we in addition validate the model by comparing the radial distribution function $g(r)$, porosity and surface area of the system. The simulated system is confined to a cube of size $\SI{159}{\angstrom^{3}}$, but since the procedural noise function is continuous on all scales, the box could be of arbitrary size. 
+In this paper, we are interested in developing a model using simplex noise to reproduce nanoporous structures that are as statistically close to actual simulations of porous media. For a given data set and a model, we wish to estimate the parameters that best represent the data. This is performed through a full likelihood analysis, where we in addition validate the model by comparing the radial distribution function $g(r)$, porosity and surface area of the system. The simulated system is confined to a cube of size $\SI{159} {\angstrom}^3$, but since the procedural noise function is continuous on all scales, the box could be of arbitrary size. 
 
 \begin{figure*}
 \includegraphics[width=.95\textwidth]{model_examples.png}
@@ -231,7 +231,7 @@ We now turn our attention to applying the MCMC framework on two kinds of data. F
 \caption{Simulated mock data used for the initial model testing analysis. Input parameters are $\nu=0.03$,$\tau=-0.02$ and $\psi=0.6$.}
 \label{fig:mockdata}
 \end{figure}
-In order to verify our likelihood code, we perform a model verification test on a mock data set with known input values. In this example, we only use standard simplex noise with three free parameters: the persistence $\psi$, threshold $\tau$ and scale $\nu$. We simulate a data set of $159 ^3 \AA$ of $\sim 255 000$ atoms, and perform the cut-off given input parameters $\Omega=3$, $\Psi = 0.6$, $\tau=-0.2$, $\nu=0.03$. The resulting 3D structure is depicted in figure \ref{fig:mockdata}. 
+In order to verify our likelihood code, we perform a model verification test on a mock data set with known input values. In this example, we only use standard simplex noise with three free parameters: the persistence $\psi$, threshold $\tau$ and scale $\nu$. We simulate a data set of $\SI{159} {\angstrom}^3$ of $\sim 255 000$ atoms, and perform the cut-off given input parameters $\Omega=3$, $\Psi = 0.6$, $\tau=-0.2$, $\nu=0.03$. The resulting 3D structure is depicted in figure \ref{fig:mockdata}. 
 
 We continue by performing a full MCMC analysis of the mock data with using a parallelized code running on a 48 core cluster. In order to produce 300 000 samples, about 48 hours was needed. The results from this analysis can be seen in figure \ref{fig:mockdataresults_pts}, where the upper panel depicts the marginalised 1D posteriors while the lower shows the marginalised 2D posteriors. The centre and left image shows that the input parameters of $\tau=-0.2$(threshold), $\psi=0.6$(persistence) and $\nu=0.03$ are all reproduced well within $1 \sigma$.
 
@@ -251,7 +251,10 @@ Note that there seems to be no problems with the posterior distribution in terms
 %\end{figure}
 \begin{figure*}
 \includegraphics[width=.99\textwidth]{results_porous_full.png}
-\caption{Results from the analysis of a simulated $159^3$ \AA SiO$_2$ nanoporous data set. The upper panel displays the marginalised 1D posteriors for each parameter, while the lower panel depicts the marginalised 2D posteriors. Best fit parameters from the maximum 3D likelihood suggest $\tau=-0.2$, $\psi=0.8$ and $\nu=0.3$.}
+\caption{
+Results from the analysis of a simulated $\SI{159} {\angstrom}^3$ SiO$_2$ nanoporous data set. The upper panel displays the marginalised 1D posteriors for each parameter, while the lower panel depicts the marginalised 2D posteriors. Best fit parameters from the maximum 3D likelihood suggest $\tau=-0.2$, $\psi=0.8$ and $\nu=0.3$.
+}
+
 \label{fig:porous_results1}
 \end{figure*}
 
@@ -273,7 +276,7 @@ Finally, we depict a comparison of the actual simulated input SiO$_2$ data set t
 \label{fig:porous_vs_model}
 \end{figure}
 
-The porosity of the input SiO data set is $75\%$, while the best-fit data set has porosity $77\% \pm 3 \%$, depending on the random seed. In addition, the surface area of the original data set was $\sim \SI{29000}{\angstrom^2}$, while the best-fit data shows similar values with surface are ranging between $\sim \SI{28000}{\angstrom^2}$ and $\sim \SI{30000}{\angstrom^2}$.
+The porosity of the input SiO$_2$ data set is $75\%$, while the best-fit data set has porosity $77\% \pm 3 \%$, depending on the random seed. In addition, the surface area of the original data set was $\sim \SI{29000}{\angstrom^2}$, while the best-fit data shows similar values with surface are ranging between $\sim \SI{28000}{\angstrom^2}$ and $\sim \SI{30000}{\angstrom^2}$.
 \todo{legg ved 3D plot av likelihood for aa vise at den er kjekk og fin}
 
 \subsection{Some notes on the results}
@@ -294,7 +297,7 @@ We also calculated the variation in the $g(r)$ given initial conditions on both 
 
 \section{Conclusion}
 \todo{konklusjon maa renskrives}
-In this paper, we have proposed a novel method for generating a simple kind of nanoporous media using procedural methods, namely simplex noise. We have developed tools for creating such porous materials, and also estimating model parameters given data. We have shown that it is possible through a full likelihood analysis to reproduce the input parameters of a simulated model. In addition, we performed an analysis on a simulated $159^3 \AA$ data set of SiO$_2$, and explain that while porosity and surface area corresponds well between the model and data, the $g(r)$ shows that the current model does not exactly reproduce correct data. However, we do not claim that the current model should do so yet, since we have chosen the simplest kind of summation with regards to procedural noise modes. 
+In this paper, we have proposed a novel method for generating a simple kind of nanoporous media using procedural methods, namely simplex noise. We have developed tools for creating such porous materials, and also estimating model parameters given data. We have shown that it is possible through a full likelihood analysis to reproduce the input parameters of a simulated model. In addition, we performed an analysis on a simulated $\SI{159}{\angstrom^{3}}$ data set of SiO$_2$, and explain that while porosity and surface area corresponds well between the model and data, the $g(r)$ shows that the current model does not exactly reproduce correct data. However, we do not claim that the current model should do so yet, since we have chosen the simplest kind of summation with regards to procedural noise modes. 
 
 \subsection{Future work}
 In this paper, we have only considered the simplest kind of procedural noise: a simple sum over modes with threshold cut-off $\tau$, scale fall-off persistence $\psi$ and initial scale $\nu$. We have also seen that, even through both porosity and surface area accurately reproduced, there are features in the RDF that are not fully captured with the current model. This is evident from the images of the simulated structure seen in figure \ref{fig:porous_vs_model}, where the connecting nearly one-atom thin walls are difficult to reproduce with the current model. However, as procedural noise exert properties closely related to that of fractals, it is possible to extend the number of parameters and define new models with very different properties. Some examples of these models are depicted in figure \ref{fig:future_models}, where the left- and centre images show a new model with two new parameters (offset and gain), while the rightmost panel shows a simulation where the scale $\nu$ is itself being perturbed by procedural noise, yielding strong circular asymmetric patterns.   
