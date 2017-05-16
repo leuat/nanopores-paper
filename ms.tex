@@ -39,27 +39,52 @@ In this paper, we aim to develop a method for producing statistically correct po
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-The rapid development of new experimental and observational methods to determine the three-dimensional structure of many types of porous media calls for new statistical tools and methods to characterize complex porous media and to generate synthetic media based on the observed structures. New experimental methods allow for studies of three-dimensional structures from nano-meter to meter scales. Destructive techniques such as focused ion beam scanning electron microscopy (FIB-SEM) are routinely used to characterize geologically relevant structures in shales and carbonate rocks with resolutions down to tens of nanometers \cite{XX}. High-energy X-ray tomography methods using high-energy beams at international research facilites or in-house scanners open for three-dimensional mapping of mineral structures from sub-micrometer to millimeter scales \cite{XX}. Thus new experimental techniques provide three-dimensional voxelized images that can form the basis of analysis or modeling. However, in many cases we can only scan a few examples experimentally, but need to perform simulations over many statistically similar realizations to find effective properties or to populate upscaling models. Thus the need for methods to robustly characterize three-dimensional porous structures and to generate synthetic structures with similar statistical properties. 
+The rapid development of new experimental and observational methods to determine the three-dimensional structure of many types of porous media calls for new statistical tools and methods to characterize complex porous media and to generate synthetic media based on the observed structures.
+New experimental methods allow for studies of three-dimensional structures from nano-meter to meter scales.
+Destructive techniques such as focused ion beam scanning electron microscopy (FIB-SEM) are routinely used to characterize geologically relevant structures in shales and carbonate rocks with resolutions down to tens of nanometers \cite{XX}.
+High-energy X-ray tomography methods using high-energy beams at international research facilites or in-house scanners open for three-dimensional mapping of mineral structures from sub-micrometer to millimeter scales \cite{XX}.
+Thus new experimental techniques provide three-dimensional voxelized images that can form the basis of analysis or modeling.
+However, in many cases we can only scan a few examples experimentally, but need to perform simulations over many statistically similar realizations to find effective properties or to populate upscaling models.
+Thus the need for methods to robustly characterize three-dimensional porous structures and to generate synthetic structures with similar statistical properties. 
 
-The field of synthetic rocks is a large field both scientifically and technologically \cite{}. Methods to generate synthentic rock samples from experimental characterizations may be based on purely statistical or geometrical models, models of physical processes that generate the samples, or combinations of both. For small-scale porous media, physical models are often used to generate initial grain packings \cite{}, then further mechano-chemical and fluid-mediated processes such as precipitation-dissoluton processes and pressure solution \cite{}, or fracture and plastic deformation processes are added to include effects of long-term compaction \cite{}. On large scales, reservoir models are populated by statistical models for lithological and geomorphological processes \cite{}, such as river fan formation to generate particular grain size distributions \cite{}. More statistical approaches include variations of percolation models \cite{sahimi} or network models \cite{} to characterize and generate uncorrelated or correlated porous media. In addition, the high resolution of observational methods allow three-dimensional scans to form the basis for atomic-scale modeling using molecular modeling methods such as molecular dynamics or Monte Carlo methods to study the dynamics of nanoporous media. But then procedural or physical models are needed to fill in the atomic scale details, to build many statistical realizations of nanoporous media with atomic-scale details, and to extrapolate to larger scale models.
+The field of synthetic rocks is a large field both scientifically and technologically \cite{}. 
+Methods to generate synthentic rock samples from experimental characterizations may be based on purely statistical or geometrical models, models of physical processes that generate the samples, or combinations of both. 
+For small-scale porous media, physical models are often used to generate initial grain packings \cite{}, then further mechano-chemical and fluid-mediated processes such as precipitation-dissoluton processes and pressure solution \cite{}, or fracture and plastic deformation processes are added to include effects of long-term compaction \cite{}. 
+On large scales, reservoir models are populated by statistical models for lithological and geomorphological processes \cite{}, such as river fan formation to generate particular grain size distributions \cite{}. 
+More statistical approaches include variations of percolation models \cite{sahimi} or network models \cite{} to characterize and generate uncorrelated or correlated porous media. 
+In addition, the high resolution of observational methods allow three-dimensional scans to form the basis for atomic-scale modeling using molecular modeling methods such as molecular dynamics or Monte Carlo methods to study the dynamics of nanoporous media. 
+But then procedural or physical models are needed to fill in the atomic scale details, to build many statistical realizations of nanoporous media with atomic-scale details, and to extrapolate to larger scale models.
 
-These physically based models may not always include all relevant effects, can be quite computationally expensive when used to generate many samples, and cannot easily be extended beyond the initial size of the simulated systems. For example, to prepare a simulation of nanoporous silica, we need to carry out a sequence of large scale simulations in molecular dynamics, which is time consuming, computationally expensive and the results canno be exteded beyond the intial size of the simulated systems without performing another simulation \cite{Adarsh}. On the other hand, the statistical models often do not include all the correlations induced by physical processes or have limited number of tunable parameters. In particular, statistical models have challenges in reproducing atomic-scale structures of nanoporous media. 
+These physically based models may not always include all relevant effects, can be quite computationally expensive when used to generate many samples, and cannot easily be extended beyond the initial size of the simulated systems. 
+For example, to prepare a simulation of nanoporous silica, we need to carry out a sequence of large scale simulations in molecular dynamics, which is time consuming, computationally expensive and the results canno be exteded beyond the intial size of the simulated systems without performing another simulation \cite{Adarsh}. 
+On the other hand, the statistical models often do not include all the correlations induced by physical processes or have limited number of tunable parameters. 
+In particular, statistical models have challenges in reproducing atomic-scale structures of nanoporous media. 
 
-Meanwhile, there has been a recent growth in advanced random noise models that open for new ways to generate structured noise with statistical similarities to real samples, such as the use of Perlin noise. Such noise models have been used to model systems with complex statistical correlations such as in (examples from Nicloaas galaxy/astrophysics applications), and show great promise in being adaptable to many different physical systems. Also, such noise models are continuous and extendable, so that arbitrary large systems or systems with arbitrary high precision can be modeled. While these models show great promise in many fields \cite{}, they have not yet been systematically applied to characterize or generate nanoporous media with statistical properties corresponding to that of real systems.
 
-In this paper, we propose a new method for producing realistic-looking nanoporous media using only random noise fields, without the need for physics simulations. We provide a systematic study of the use of procedural noise-based models to characterize and generate three-dimensional nanoporous media. Our studies will be based on silica-based nanoporous media, for which we have good atomic scale models and physics-based methods to generate porous media as a sequence of simulated processes, and we therefore can generate large-scale samples where we have full knowledge of all aspects of the material. These simulated systems are then characterized using the radial distribution function, $g(r)$, statistical methods are generated with similar properties, and compared with the simulated systems. Using these approaches we find that procedural noise methods can be tuned to efficiently create materials that are structurally similar to simulationed materials. 
+Meanwhile, there has been a recent growth in advanced random noise models that open for new ways to generate structured noise with statistical similarities to real samples, such as the use of Perlin noise. 
+Such noise models have been used to model systems with complex statistical correlations such as in GAMER\cite{groeneboom:2014}, and show great promise in being adaptable to many different physical systems. 
+Also, such noise models are continuous and extendable, so that arbitrary large systems or systems with arbitrary high precision can be modeled. 
+While these models show great promise in many fields \cite{}, they have not yet been systematically applied to characterize or generate nanoporous media with statistical properties corresponding to that of real systems.
+
+In this paper, we propose a new method for producing realistic-looking nanoporous media using only random noise fields, without the need for physics simulations. 
+We provide a systematic study of the use of procedural noise-based models to characterize and generate three-dimensional nanoporous media. 
+Our studies will be based on silica-based nanoporous media, for which we have good atomic scale models and physics-based methods to generate porous media as a sequence of simulated processes, and we therefore can generate large-scale samples where we have full knowledge of all aspects of the material. 
+These simulated systems are then characterized using the radial distribution function, $g(r)$, statistical methods are generated with similar properties, and compared with the simulated systems. 
+Using these approaches we find that procedural noise methods can be tuned to efficiently create materials that are structurally similar to simulationed materials. 
 
 \section{Procedural content generation}
-By procedural content generation, we generally mean a mathematical algorithm that uses limited input data to create complex, sometimes infinite repeating patterns. A firm example would be fractals, such as the Julia/Mandelbrot [ref Mandelbrot] set, where one tests whether the complex quadratic recurrence equation $z_{n+1} = z_n^2 +C$ for $z \in \mathbb C$ converges for each position in a 2D complex plane. With this seemingly simple equation, the level of complexity generated on the boundary between convergence and divergence is infinite, with self-similar patterns repeating themselves to arbitrary detail.
-\begin{figure}
-\includegraphics[width=.5\textwidth]{orphancity.png}
-\caption{Example of city building using procedural methods: Landscape, city infrastructure, buildings and all textures are all automatically generated using procedural methods. Created by one of the authors. \todo{Denne er jo med bare for moro skyld, boer jo fjernes} }
-\label{fig:orphancity}
-\end{figure}
+By procedural content generation, we generally mean a mathematical algorithm that uses limited input data to create complex, sometimes infinite repeating patterns.
+A firm example would be fractals, such as the Julia/Mandelbrot [ref Mandelbrot] set, where one tests whether the complex quadratic recurrence equation $z_{n+1} = z_n^2 +C$ for $z \in \mathbb C$ converges for each position in a 2D complex plane.
+With this seemingly simple equation, the level of complexity generated on the boundary between convergence and divergence is infinite, with self-similar patterns repeating themselves to arbitrary detail.
 
-Another example, widely used in contemporary game content generation, is having prefabs, or pre-fabricated 3D models such as doors, walls, tiles and roof segments automatically being stitched together to create buildings. When designing a city, instead of creating each building manually, you only need specify the position, area and height of a structure. Then, by using an algorithm that combines these prefabs to render the building, it is possible to create cities of arbitrary size with a single command. Naturally, it is also possible to create procedural methods that design the layout and placement of these buildings. See figure \ref{fig:orphancity} for an example of such a city generator tool, developed by one of the authors of this paper. 
+Another example, widely used in contemporary game content generation, is having prefabs, or pre-fabricated 3D models such as doors, walls, tiles and roof segments automatically being stitched together to create buildings.
+When designing a city, instead of creating each building manually, you only need specify the position, area and height of a structure.
+Then, by using an algorithm that combines these prefabs to render the building, it is possible to create cities of arbitrary size with a single command.
+Naturally, it is also possible to create procedural methods that design the layout and placement of these buildings.
+See figure \ref{fig:orphancity} for an example of such a city generator tool, developed by one of the authors of this paper.
 
-A much simpler example would be generating a 1 (or 2)-dimensional terrain by choosing random points on a grid and performing a spline interpolation between them to create the illusion of a smooth landscape. In fact, this is the very essence of procedural noise, which we are focusing on in our model, and the first person to create such a fast algorithm for N-dimensional spline interpolation between pseudo-random points was Ken Perlin.   
+A much simpler example would be generating a 1 (or 2)-dimensional terrain by choosing random points on a grid and performing a spline interpolation between them to create the illusion of a smooth landscape.
+In fact, this is the very essence of procedural noise, which we are focusing on in our model, and the first person to create such a fast algorithm for N-dimensional spline interpolation between pseudo-random points was Ken Perlin.
 
 \subsection{Perlin/Simplex noise}
 \label{sec:perlin}
@@ -69,7 +94,10 @@ fractal-like patterns have been around for more than 30 years. The most famous o
 algorithms is Perlin noise, first developed by Ken Perlin in 1983 for
 use in the movie ``Tron''\cite{perlin1985image}. 
 
-Perlin noise is a type of pseudo-random gradient noise that mimics a Gaussian field, but at low computational cost. An improved version of Perlin noise is called simplex noise, which has several advantages over standard Perlin noise in terms of scalability and speed \cite{perlin:2002}. Perlin noise was developed in response to the lack of detail 1980's contemporary graphics, where polygonal surfaces often were bland and left without any detail. In response to this problem, Perlin noise was developed in order to continuously perturb the light bouncing off flat surfaces, effectively yielding bump mapping and producing a much more realistic image. 
+Perlin noise is a type of pseudo-random gradient noise that mimics a Gaussian field, but at low computational cost.
+An improved version of Perlin noise is called simplex noise, which has several advantages over standard Perlin noise in terms of scalability and speed \cite{perlin:2002}.
+Perlin noise was developed in response to the lack of detail 1980's contemporary graphics, where polygonal surfaces often were bland and left without any detail.
+In response to this problem, Perlin noise was developed in order to continuously perturb the light bouncing off flat surfaces, effectively yielding bump mapping and producing a much more realistic image.
 
 An overview of the current state of procedural noise functions can be
 found in \cite{lagae:2010}. Perlin noise is a band limited repeatable pseudo-random function
@@ -152,7 +180,12 @@ part of figure \ref{fig:noise}. Finally, since simplex noise both scales better 
 
 
 \section{Model}
-In this paper, we are interested in developing a model using simplex noise to reproduce nanoporous structures that are as statistically close to physical simulations of porous media. For a given data set and a model, we wish to estimate the parameters that best represent the data. This is performed through a full likelihood analysis in order to obtain the posterior probability distribution of the parameters. The model measure of the analysis is the radial distribution function $g(r)$, for which the parameters will be maximised to fit. In addition, we also investigate the porosity and surface area of the system. The simulated system is confined to a cube of size $\SI{159} {\angstrom}^3$, but since the procedural noise function is continuous on all scales, the box could be of arbitrary size. 
+In this paper, we are interested in developing a model using simplex noise to reproduce nanoporous structures that are as statistically close to physical simulations of porous media.
+For a given data set and a model, we wish to estimate the parameters that best represent the data. 
+This is performed through a full likelihood analysis in order to obtain the posterior probability distribution of the parameters. 
+The model measure of the analysis is the radial distribution function $g(r)$, for which the parameters will be maximised to fit. 
+In addition, we also investigate the porosity and surface area of the system. 
+The simulated system is confined to a cube of size $\SI{159} {\angstrom}^3$, but since the procedural noise function is continuous on all scales, the box could be of arbitrary size. 
 
 \begin{figure*}
 \includegraphics[width=.95\textwidth]{model_examples.png}
@@ -168,17 +201,22 @@ where $\Omega$ is the total amount of octaves, $\psi$ the persistence (scale fal
 
 
 \subsection{Model Measure}
-In order to perform data analysis on the model parameters, we developed a code that uses Monte Carlo Markov chains to produce samples for building the posterior probability distribution for the parameters. Before doing so, we need a model measure - a quantitative method that characterizes the internal structure of the porous media. This quantity should be computed for both the original data set and the one produced by our noise model. 
+In order to perform data analysis on the model parameters, we developed a code that uses Monte Carlo Markov chains to produce samples for building the posterior probability distribution for the parameters. 
+Before doing so, we need a model measure - a quantitative method that characterizes the internal structure of the porous media. This quantity should be computed for both the original data set and the one produced by our noise model. 
 
-Ideally, the model measure should pick up all geometrical properties that are relevant for the physical study of interest. For instance, transport in porous media heavily depends on the pore size distribution and porosity, whereas chemical reactons are sensitive to surface area. \todo{referanser, malthe?} In this paper, we choose to focus on the radial distribution function $g(r)$ as defined and implemented in LAMMPS \cite{plimpton1995fast}. $g(r)$ describes how density varies as a function of distance from a reference particle, picking up both the intramolecular and intermolecular structure. We have chosen to ignore the short range contributions of $g(r)$ since the pore geometry does not depend on the intra-molecular structure of SiO$_2$, but only the density variations at larger distances. Hereafter, $g_d(r)$ denotes the RDF calculated from simulated or experimental data, while $g_{M(\bar \theta)}(r)$ represents the RDF based on the procedural noise model $M(\bar \theta)$, where $\bar \theta$ is the set of model parameters. 
+Ideally, the model measure should pick up all geometrical properties that are relevant for the physical study of interest. 
+For instance, transport in porous media heavily depends on the pore size distribution and porosity, whereas chemical reactons are sensitive to surface area. \todo{referanser, malthe?} 
+In this paper, we choose to focus on the radial distribution function $g(r)$ as defined and implemented in LAMMPS \cite{plimpton1995fast}. $g(r)$ describes how density varies as a function of distance from a reference particle, picking up both the intramolecular and intermolecular structure. 
+We have chosen to ignore the short range contributions of $g(r)$ since the pore geometry does not depend on the intra-molecular structure of SiO$_2$, but only the density variations at larger distances. 
+Hereafter, $g_d(r)$ denotes the RDF calculated from simulated or experimental data, while $g_{M(\bar \theta)}(r)$ represents the RDF based on the procedural noise model $M(\bar \theta)$, where $\bar \theta$ is the set of model parameters. 
 
-The method used for calculating porosity of a media is defined as in \cite{gelb1998characterization}, and we obtain the surface area of a porous media by using marching cubes triangulation to sum the surface area of the generated triangles. As discussed in \cite{gelb1998characterization}, the definition of surface area is ill-defined in atomic simulations, because a clear definition of pore space is needed. In the marching cubes triangulation, we create a voxelized grid, a scalar field with values being the distance from the voxel centre to the nearest atom. The isovalue threshold defining the surface is chosen to be \SI{2}{\angstrom}, large enough to contribute to a dense pore matrix, but small enough to have most of the available pore space defined as such. The important note here is that the same definition of both surface and porosity is being used in all systems that are compared, physical simulations, procedural methods or data. 
+The method used for calculating porosity of a media is defined as in \cite{gelb1998characterization}, and we obtain the surface area of a porous media by using marching cubes triangulation to sum the surface area of the generated triangles.
+As discussed in \cite{gelb1998characterization}, the definition of surface area is ill-defined in atomic simulations, because a clear definition of pore space is needed. 
+In the marching cubes triangulation, we create a voxelized grid, a scalar field with values being the distance from the voxel centre to the nearest atom. 
+The isovalue threshold defining the surface is chosen to be \SI{2}{\angstrom}, large enough to contribute to a dense pore matrix, but small enough to have most of the available pore space defined as such. 
+The important note here is that the same definition of both surface and porosity is being used in all systems that are compared, physical simulations, procedural methods or data. 
 
 \todo{skriv litt mer om hvorfor vi velger g(r)}
-
-
-
-
 
 
 %\begin{figure}[htb!]
@@ -253,11 +291,21 @@ Results from the analysis of a simulated $\SI{159} {\angstrom}^3$ SiO$_2$ nanopo
 \label{fig:porous_results1}
 \end{figure*}
 Having verified that the likelihood code yields correct results when analysing mock data, we turn to 
-performing a parameter fitting analysis on realistic simulated nanoporous media. Using LAMMPS \cite{plimpton1995fast} and the Vashishta-potential \cite{vashishta1990interaction}, we simulate system consisting of $14^3$ betacristobalite unit cells of SiO$_2$, corresponding to system size of approximately \SI{100}{\angstrom}. The temperature is then increased to \SI{4500}{\kelvin} using NVT integration. After an initial period, we expand the box to \SI{159}{\angstrom} to achieve a porosity $\phi=0.75$. Then, the system is quenched by setting the temperature to \SI{300}{\kelvin}, resulting in the nanoporous media on the right side in figure \ref{fig:porous_vs_model}. By choosing a different seed for the initial velocities, it is possible to produce statistically equal samples but with random realizations. 
+performing a parameter fitting analysis on realistic simulated nanoporous media. Using LAMMPS \cite{plimpton1995fast} and the Vashishta-potential \cite{vashishta1990interaction}, we simulate system consisting of $14^3$ betacristobalite unit cells of SiO$_2$, corresponding to system size of approximately \SI{100}{\angstrom}. 
+The temperature is then increased to \SI{4500}{\kelvin} using NVT integration. 
+After an initial period, we expand the box to \SI{159}{\angstrom} to achieve a porosity $\phi=0.75$. 
+Then, the system is quenched by setting the temperature to \SI{300}{\kelvin}, resulting in the nanoporous media on the right side in figure \ref{fig:porous_vs_model}. 
+By choosing a different seed for the initial velocities, it is possible to produce statistically equal samples but with random realizations. 
 
-With the model described in equation \ref{eq:noisemodel1}, we perform a full likelihood analysis of the data set with the three free parameters $\tau$, $\nu$ and $\psi$ using $g(r)$ as the measure. The resulting marginalised posteriors are depicted in figure \ref{fig:porous_results1}, where the best-fit parameters $\tau=-0.2$, $\psi=0.8$ and $\nu=0.3$ is extracted from the full 3D likelihood. We also display $g(r)$ for the input data set, a best-fit parameter data set and a bad-fit data set in figure \ref{fig:gofr1}, to illustrate the sensitivity of $g(r)$ given the model parameters. Note that we are not able to accurately reproduce the structures of the SiO$_2$ $g(r)$ with our current model, but hope that we during future work will be able to produce another model that provides a better fit with this measure. \todo{skriv om hvorfor vi ikke plukker opp alle features?}
 
-Note that the surface atoms are not in chemical equilibrium since some neighbours of a surface atom might have been removed. In order to use the generated geometry in molecular dynamics, one would need either noble gas atoms which may be stable, or apply passivation step.
+With the model described in equation \ref{eq:noisemodel1}, we perform a full likelihood analysis of the data set with the three free parameters $\tau$, $\nu$ and $\psi$ using $g(r)$ as the measure. 
+The resulting marginalised posteriors are depicted in figure \ref{fig:porous_results1}, where the best-fit parameters $\tau=-0.2$, $\psi=0.8$ and $\nu=0.3$ is extracted from the full 3D likelihood. 
+We also display $g(r)$ for the input data set, a best-fit parameter data set and a bad-fit data set in figure \ref{fig:gofr1}, to illustrate the sensitivity of $g(r)$ given the model parameters. 
+Note that we are not able to accurately reproduce the structures of the SiO$_2$ $g(r)$ with our current model, but hope that we during future work will be able to produce another model that provides a better fit with this measure. 
+\todo{skriv om hvorfor vi ikke plukker opp alle features?}
+
+Note that the surface atoms are not in chemical equilibrium since some neighbours of a surface atom might have been removed. 
+In order to use the generated geometry in molecular dynamics, one would need either noble gas atoms which may be stable, or apply passivation step.
 
 \begin{figure}
 \includegraphics[width=.45\textwidth]{gofr_plot.png}
@@ -275,27 +323,44 @@ The porosity of the input SiO$_2$ data set is $75\%$, while the best-fit data se
 \todo{legg ved 3D plot av likelihood for aa vise at den er kjekk og fin}
 
 \subsection{Discussion}
-It is worth to note that since we are chiefly interested in obtaining a set of parameters that reproduces a statistical correct representation of the input data, we are relatively free to choose parameters as desired within the posterior distribution width of the parameter. In the previous analysis, we selected a best fit threshold value of $\tau=-0.2$, but from the width of the likelihood it is clear that nearby parameters would also be suitable. However, the surface area is strongly correlated with this value, so even slight deviations (e.g. $\Delta \tau = 0.05$) yields a relatively large change in surface area. In addition, we do not claim that this model completely reproduces the pore structure observed in nanoporous simulations, as is evident from the RDF shown in figure \ref{fig:gofr1}, but hope to discover a better model that will produce a $g(r)$ that is more in accordance with the data.
+It is worth to note that since we are chiefly interested in obtaining a set of parameters that reproduces a statistical correct representation of the input data, we are relatively free to choose parameters as desired within the posterior distribution width of the parameter.
+In the previous analysis, we selected a best fit threshold value of $\tau=-0.2$, but from the width of the likelihood it is clear that nearby parameters would also be suitable. 
+However, the surface area is strongly correlated with this value, so even slight deviations (e.g. $\Delta \tau = 0.05$) yields a relatively large change in surface area. 
+In addition, we do not claim that this model completely reproduces the pore structure observed in nanoporous simulations, as is evident from the RDF shown in figure \ref{fig:gofr1}, but hope to discover a better model that will produce a $g(r)$ that is more in accordance with the data.
 
 \subsection{$g(r)$ variation}
-We also calculated the variation in the $g(r)$ given initial conditions on both our model and simulated data. In terms of the data, the variation is attributed as the initial velocities of the particles in the LAMMPS simulation. For the model, it corresponds to the random seed. We found that varying these initial conditions have negligible effect on the calculation of $g(r)$.
+We also calculated the variation in the $g(r)$ given initial conditions on both our model and simulated data. 
+In terms of the data, the variation is attributed as the initial velocities of the particles in the LAMMPS simulation. 
+For the model, it corresponds to the random seed. We found that varying these initial conditions have negligible effect on the calculation of $g(r)$.
 
 
 
 \section{Conclusion}
 \todo{konklusjon maa renskrives}
 
-In this paper, we have proposed a novel method for generating a nanoporous media using procedural methods in the form of simplex noise. Procedural methods, albeit having no root in physics, have some advatages over prevalent methods: they are computationally efficient, have low memory footprints and are only limited in terms of detail by the model in question. In particular, it is possible to create simulations of arbitrary scales and resolution, indeed with any level of detail. 
+In this paper, we have proposed a novel method for generating a nanoporous media using procedural methods in the form of simplex noise. 
+Procedural methods, albeit having no root in physics, have some advatages over prevalent methods: they are computationally efficient, have low memory footprints and are only limited in terms of detail by the model in question. 
+In particular, it is possible to create simulations of arbitrary scales and resolution, indeed with any level of detail. 
 
 \todo{AMS: This is a bit weak currently. State first what you have succeeded in doing. Then state the possible weaknesses of the model.}
-We have developed a framework to generate nanoporous media using molecular dynamics simulations and to estimate model parameters given such data. We have shown that it is possible through a full likelihood analysis to successfully reproduce the input parameters of procedurally simulated data. In addition, we performed an analysis on a simulated $\SI{159}{\angstrom^{3}}$ data set of SiO$_2$, and explain that while porosity and surface area correspond well between the model and data, analysis of $g(r)$ shows that the current model reproduces the main features of the material, but that there are some deviations. We find the correspondence strong, which demonstrates the proof-of-principle of the use of procedural noise methods, but we realize that even better correspondence may be achieved by including other summations in the procedural noise modes. 
+We have developed a framework to generate nanoporous media using molecular dynamics simulations and to estimate model parameters given such data. 
+We have shown that it is possible through a full likelihood analysis to successfully reproduce the input parameters of procedurally simulated data. 
+In addition, we performed an analysis on a simulated $\SI{159}{\angstrom^{3}}$ data set of SiO$_2$, and explain that while porosity and surface area correspond well between the model and data, analysis of $g(r)$ shows that the current model reproduces the main features of the material, but that there are some deviations. 
+We find the correspondence strong, which demonstrates the proof-of-principle of the use of procedural noise methods, but we realize that even better correspondence may be achieved by including other summations in the procedural noise modes. 
 
 \subsection{Future work}
-We have only considered the simplest kind of procedural noise: a simple sum over modes with threshold cut-off $\tau$, scale fall-off persistence $\psi$ and initial scale $\nu$. We have also seen that, even through both porosity and surface area accurately reproduced, there are features in the RDF that are not fully captured with the current model. This is evident from the images of the simulated structure seen in figure \ref{fig:porous_vs_model}, where the connecting nearly one-atom thin walls are difficult to reproduce with the current model. However, as procedural noise exert properties closely related to that of fractals, it is possible to extend the number of parameters and define new models with very different properties. Some examples of these models are depicted in figure \ref{fig:future_models}, where the left- and centre images show a new model with two new parameters (offset and gain), while the rightmost panel shows a simulation where the scale $\nu$ is itself being perturbed by procedural noise, yielding strong circular asymmetric patterns.   
+We have only considered the simplest kind of procedural noise: a simple sum over modes with threshold cut-off $\tau$, scale fall-off persistence $\psi$ and initial scale $\nu$. 
+We have also seen that, even through both porosity and surface area accurately reproduced, there are features in the RDF that are not fully captured with the current model. 
+This is evident from the images of the simulated structure seen in figure \ref{fig:porous_vs_model}, where the connecting nearly one-atom thin walls are difficult to reproduce with the current model. 
+However, as procedural noise exert properties closely related to that of fractals, it is possible to extend the number of parameters and define new models with very different properties. 
+Some examples of these models are depicted in figure \ref{fig:future_models}, where the left- and centre images show a new model with two new parameters (offset and gain), while the rightmost panel shows a simulation where the scale $\nu$ is itself being perturbed by procedural noise, yielding strong circular asymmetric patterns.   
 
-Another immediate application would be to estimate model parameters given experimental observations of porous media. This would enable us to estimate new parameters such as instrumental noise, deviations from symmetry (asymmetric properties), and pureness of samples. In addition, by analysing just a few samples and developing a model that produces similar structures as in the specimens, we are able to produce an arbitrary amount of statistically correct samples, free from instrumental noise and artefacts. 
+Another immediate application would be to estimate model parameters given experimental observations of porous media. 
+This would enable us to estimate new parameters such as instrumental noise, deviations from symmetry (asymmetric properties), and pureness of samples. 
+In addition, by analysing just a few samples and developing a model that produces similar structures as in the specimens, we are able to produce an arbitrary amount of statistically correct samples, free from instrumental noise and artefacts. 
 
-A final key analysis would be to compare properties such as permeability through finite-element simulations of gas/liquid flow through our simulated structures, in addition to exerting shear forces, and comparing with actual simulated data from e.g. LAMMPS. Since the noise function is a continuous boolean function that only checks whether a position is within a wall or void given a threshold, we are not limited to any size of the simulated system, and simulated particles traversing the media has arbitrary range.  
+A final key analysis would be to compare properties such as permeability through finite-element simulations of gas/liquid flow through our simulated structures, in addition to exerting shear forces, and comparing with actual simulated data from e.g. LAMMPS. 
+Since the noise function is a continuous boolean function that only checks whether a position is within a wall or void given a threshold, we are not limited to any size of the simulated system, and simulated particles traversing the media has arbitrary range.  
 
 %Minkowski functionals and topology, genus etc
 
@@ -306,15 +371,6 @@ A final key analysis would be to compare properties such as permeability through
 \caption{Example of future models. Left panel: A multi-fractal model with thin surfaces and large pores. Centre panel: a multi fractal with cave-like structures. Right panel: A model with strong asymmetric noise. }
 \label{fig:future_models}
 \end{figure*}
-
-\todo{Kanskje fake-latin burde fjernes? Usikker!}
-Ut hendrerit cursus libero, in scelerisque tortor sollicitudin accumsan. Nam eleifend velit metus, quis volutpat justo faucibus ut. Cras ut sem in nunc fringilla egestas vitae sit amet justo. Ut vel condimentum tortor. Morbi in massa in ipsum ultrices tincidunt. Duis feugiat dignissim nisi ac ultricies. Quisque eget risus fermentum, condimentum massa ullamcorper, posuere neque. Nam congue consequat mi, vel commodo mi tempus eget.
-
-Nullam ultrices, velit sed venenatis ultrices, risus urna ultricies magna, at pretium lorem nibh et nunc. Suspendisse sed mattis leo. Nulla facilisi. Praesent finibus lobortis leo, ut porttitor massa tincidunt ut. Vivamus quis orci eu sem sodales ornare. Cras sed faucibus velit. Phasellus scelerisque mauris quis lorem dignissim vehicula. Sed tempor ut urna sed bibendum. Donec et nibh pulvinar, commodo magna ac, interdum nibh. Sed laoreet ipsum quis quam lacinia, in dictum erat laoreet. Etiam rhoncus mauris arcu, ac egestas lacus facilisis nec. Pellentesque a orci vitae felis faucibus ultrices sed non massa. In posuere vel ex in elementum. Aenean ac neque a enim gravida tristique eu ac lacus. Ut tincidunt venenatis lectus, et maximus mauris.
-
-Proin ornare nulla id tristique placerat. Integer nec elementum tellus. Cras at tempus lectus. Cras lorem est, ornare id condimentum vitae, scelerisque eu lectus. Aenean libero arcu, consequat vel sagittis eget, sagittis ut neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean nec quam sodales, mollis est sit amet, vulputate turpis. Praesent tempus diam eu sem laoreet finibus. Nulla finibus, sapien vel lobortis ultricies, mauris ipsum aliquet urna, quis rutrum sapien dui id ipsum. Quisque sodales ex sapien, ac egestas lacus suscipit et. Suspendisse accumsan rhoncus tristique. Pellentesque ut eros lectus. Praesent viverra sit amet odio nec vulputate. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla molestie metus vitae libero vulputate, at interdum enim tempus.
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
