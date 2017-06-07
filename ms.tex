@@ -29,7 +29,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract} 
 New experimental and observational methods of the structure of three-dimensional porous media calls for improved approaches for statistical characterization and the generation of random samples with given statistical properties. 
-We aim to develop a method for producing statistically consistent realization of porous media using procedural noise functions. By using procedural noise, we are not restricted to generating media with a predetermined resolution, since the noise functions is continuous on all scales. It is therefore possible to generate fractal-like geometries at arbitrary scales. This method is extremely fast and has low memory footprints, requiring very little computational power. We demonstrate the use of procedural noise functions by choosing a method to measure the structural properties of nanoporous media that are created either through regular methods (e.g. molecular dynamics) or with our method. The radial distribution function $g(r)$ is chosen as a measure of the structural properties to compare the simulated geometry to our model. Using this measure, we define a full likelihood framework for estimating model parameters given any data set, and continue by validating our own framework by analysing procedural noise data sets with known input parameters. Finally, we generate a nanoporous media with an expand-and-quench technique using molecular dynamics and show that our model correctly reproduces several of the internal properties of the data set, including $g(r)$, porosity and surface area. 
+We have developed a method for producing statistically consistent realization of porous media using procedural noise functions. By using procedural noise, we are not restricted to generating media with a predetermined resolution, since the noise functions is continuous on all scales. It is therefore possible to generate fractal-like geometries at arbitrary scales. This method is extremely fast and has low memory footprints, requiring very little computational power. We demonstrate the use of procedural noise functions by choosing a method to measure the structural properties of nanoporous media that are created either through regular methods (e.g. molecular dynamics) or with our method. The radial distribution function $g(r)$ is chosen as a measure of the structural properties to compare the simulated geometry to our model. Using this measure, we define a full likelihood framework for estimating model parameters given any data set, and continue by validating our own framework by analysing procedural noise data sets with known input parameters. Finally, we generate a nanoporous media with an expand-and-quench technique using molecular dynamics and show that our model correctly reproduces several of the internal properties of the data set, including $g(r)$, porosity and surface area. 
 \end{abstract} 
  
 \maketitle
@@ -204,7 +204,7 @@ In order to perform data analysis on the model parameters, we developed a code t
 Before doing so, we need a model measure - a quantitative method that characterizes the internal structure of the porous media. This quantity should be computed for both the original data set and the one produced by our noise model. 
 
 Ideally, the model measure should pick up all geometrical properties that are relevant for the physical study of interest. 
-For instance, transport in porous media heavily depends on the pore size distribution and porosity, whereas chemical reactons are sensitive to surface area. \todo{referanser, malthe?} 
+For instance, transport in porous media heavily depends on the pore size distribution and porosity, whereas chemical reactons are sensitive to surface area \cite{coussy2011mechanics}.
 In this paper, we choose to focus on the radial distribution function $g(r)$ as defined and implemented in LAMMPS \cite{plimpton1995fast}. $g(r)$ describes how density varies as a function of distance from a reference particle, picking up both the intramolecular and intermolecular structure. 
 We have chosen to ignore the short range contributions of $g(r)$ since the pore geometry does not depend on the intra-molecular structure of SiO$_2$, but only the density variations at larger distances. 
 Hereafter, $g_d(r)$ denotes the RDF calculated from simulated or experimental data, while $g_{M(\bar \theta)}(r)$ represents the RDF based on the procedural noise model $M(\bar \theta)$, where $\bar \theta$ is the set of model parameters. 
@@ -337,7 +337,7 @@ For the model, it corresponds to the random seed. We found that varying these in
 \section{Conclusion}
 \todo{konklusjon maa renskrives}
 
-In this paper, we have proposed a novel method for generating a nanoporous media using procedural methods in the form of simplex noise. 
+In this paper, we have proposed a novel method for generating a nanoporous media using procedural methods in the form of simplex noise.
 Procedural methods are not physical, but rather statistical models, and this gives them some advatages over prevalent methods: they are computationally efficient, have low memory footprints and are only limited in terms of detail by the model in question. 
 In particular, it is possible to create simulations of arbitrary scales and resolution, indeed with any level of detail. 
 
