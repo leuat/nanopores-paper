@@ -46,7 +46,7 @@ Thus new experimental techniques provide three-dimensional voxelized images that
 However, in many cases we can only scan a few examples experimentally, but need to perform simulations over many statistically similar realizations to find effective properties or to populate upscaling models.
 Thus the need for methods to robustly characterize three-dimensional porous structures and to generate synthetic structures with similar statistical properties. 
 
-The field of synthetic rocks is a large field both scientifically and technologically \cite{biswal2007stochastic,hamzehpour2006development,Reconstructing random media}. 
+The field of synthetic rocks is a large field both scientifically and technologically \citep{biswal2007stochastic,hamzehpour2006development, yeong1998reconstructing}. 
 Methods to generate synthentic rock samples from experimental characterizations may be based on purely statistical or geometrical models, models of physical processes that generate the samples, or combinations of both. 
 For small-scale porous media, physical models are often used to generate initial grain packings \cite{pilotti1998generation,scott1969density,herrmann2013physics}, then further mechano-chemical and fluid-mediated processes such as precipitation-dissoluton processes and pressure solution \cite{rutter1983pressure}, or fracture and plastic deformation processes are added to include effects of long-term compaction \cite{rutter1983pressure,renard1997pressure}. 
 On large scales, reservoir models are populated by statistical models for lithological and geomorphological processes \cite{pyrcz2014geostatistical}, such as river fan formation to generate particular grain size distributions \cite{koltermann1996heterogeneity,blair1994alluvial}. 
@@ -307,8 +307,8 @@ Note that the surface atoms are not in chemical equilibrium since some neighbour
 In order to use the generated geometry in molecular dynamics, one would need either noble gas atoms which may be stable, or to apply passivation step.
 
 \begin{figure}
-\includegraphics[width=.45\textwidth]{gofr_plot.png}
-\caption{$g(r)$ for three data sets: the simulated SiO$_2$ input data set (red), the best-fit parameter model (blue) and a random low-fit parameter model (green). \todo{Bytt denne figuren med VMD sin beregning. Normaliseringen vår er gal.}}
+\includegraphics[width=0.5\textwidth]{gofr_figure.pdf}
+\caption{$g(r)$ for three data sets: the simulated SiO$_2$ input data set (red), the best-fit parameter model (blue) and a random low-fit parameter model (green).}
 \label{fig:gofr1}
 \end{figure}
 Finally, we depict a comparison of the actual simulated input SiO$_2$ data set together with a representation of the best-fit parameters in figure \ref{fig:porous_vs_model}   
@@ -374,12 +374,5 @@ Since the noise function is a continuous boolean function that only checks wheth
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \bibliography{bibliography}
-
-%\begin{thebibliography}{9}
-
-%\bibitem[Groeneboom2014]{groeneboom2014} Groeneboom, N.~E., \& Dahle, H.\ 2014, \apj, 783, 138 
-
-%\end{thebibliography}
-
 
 \end{document}  
