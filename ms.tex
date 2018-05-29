@@ -287,28 +287,22 @@ a higher persistence $(\psi = 0.5)$, where smaller scales become more dominating
 In the rightmost picture, the effect of the threshold $\tau = -0.3$ is shown to emphasize threshold cut-off.
 The bulk system is a cubic system of amorphous SiO$_2$ with size \SI{159}{\angstrom}.
 
-\subsection{Model Measure}
+\subsection{Model measure}
 In order to perform data analysis on the model parameters, we developed a code that
 uses Monte Carlo Markov chains to produce samples for building the posterior probability distribution for the parameters. 
-Before doing so, we need a model measure - a quantitative method that characterizes
-the internal structure of the porous media. This quantity should be computed for both
-the original data set and the one produced by our noise model. 
+As mentioned previously, we have used the radial distribution function $g(r)$ as a measure to compare the model to data.
 
 Ideally, the model measure should pick up all geometrical properties that are
 relevant for the physical study of interest. 
 For instance, transport in porous media heavily depends on the pore size distribution and porosity\cite{kozeny1927uber, carman1937fluid},
-whereas chemical reactons are sensitive to surface area\cite{coussy2011mechanics}.
-In this paper, we choose to focus on the radial distribution function (RDF)
-$g(r)$ as defined and implemented in LAMMPS\cite{plimpton1995fast}.
-$g(r)$ describes how density varies as a function of distance from a 
-reference particle, picking up both the intramolecular and intermolecular structure. 
-We have chosen to ignore the short range contributions of $g(r)$ since
-the pore geometry does not depend on the intra-molecular structure of
-SiO$_2$, but only the density variations at larger distances. 
+whereas chemical reactons are sensitive to surface area\cite{coussy2011mechanics}. We have used $g(r)$ as defined and implemented in LAMMPS\cite{plimpton1995fast}.
+In our cost function (the $\chi^2$ measure), we have ignored the low $r$ values of $g(r)$ since the pore geometry does not depend on the intra-molecular structure, but only the density variations at larger distances.
+
 Hereafter, $g_d(r)$ denotes the RDF calculated from simulated or experimental data,
 while $g_{M(\bar \theta)}(r)$ represents the RDF based on the procedural noise
 model $M(\bar \theta)$, where $\bar \theta$ is the set of model parameters. 
 
+As an additional validation, we also compute the porosity and surface area of the model since these are important quantities for fluid transport.
 The method used for calculating porosity of a porous media is the same as in \cite{gelb1998characterization}.
 Surface area is obtained by creating a voxelized grid of the system with values being the distance from each voxel center to the nearest atom.
 This is now a scalar field and we can apply marching cubes\cite{lorensen1987marching} to triangulate an isosurface of the distance field.
@@ -318,10 +312,6 @@ atomistic simulations, because a clear definition of pore space is difficult.
 We have chosen to define the pore space as the set of points being more than \SI{2}{\angstrom} to any atom.
 This is large enough to contribute to a dense pore matrix, but small enough to have most of the available pore space defined as such. 
 The important note here is that the same definition of both surface and porosity is being used in all systems that are compared, physical simulations, procedural methods or data. 
-
-
-\todo{skriv litt mer om hvorfor vi velger g(r)}
-
 
 %\begin{figure}[htb!]
 %\includegraphics[width=.45\textwidth]{DTA.png}
