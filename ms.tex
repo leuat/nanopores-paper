@@ -468,8 +468,6 @@ Our current best fit model doesn't reproduce all features of the SiO$_2$ $g(r)$,
 Another important detail here is that the surface atoms are not in chemical equilibrium since some neighbours of a surface atom might lose some of its covalently bonded neighbors have been removed. 
 In order to use the generated geometry in molecular dynamics, one would need either noble gas atoms which may be stable, or to apply passivation step.
 
-\todo{skriv om hvorfor vi ikke plukker opp alle features? Men i diskusjon!}
-
 \begin{figure}
 \includegraphics[width=0.5\textwidth]{gofr_figure.pdf}
 \caption{$g(r)$ for three data sets: the simulated SiO$_2$ input data set (red), the best-fit parameter model (blue) and a random low-fit parameter model (yellow).
@@ -508,6 +506,8 @@ The porosity $\phi$ is probably indirectly correlated with the tail of $g(r)$, s
 Extending $\chi^2$ to include more effects such as the surface area, pore connectivity or even physical simulations such as diffusion constants from random walks is not difficult to do.
 Adding more measures does not necessarily help since our model may not have enough degrees of freedom on enough length scales.
 
+\todo{skriv om hvorfor vi ikke plukker opp alle features? Men i diskusjon!}
+
 We do not claim that our simple model fully reproduces the pore structure obtain from the molecular dynamics simulations, as is evident from $g(r)$ shown in figure \ref{fig:gofr1},
 but we hope to find better models.
 
@@ -519,38 +519,36 @@ By generating multiple statistically similar data sets with the two methods (mol
 We found that varying these initial conditions have negligible effect on the calculation of $g(r)$.
 
 \section{Conclusion}
-\todo{konklusjon maa renskrives}
-
-In this paper, we have proposed a novel method for generating a nanoporous media
-using procedural methods in the form of simplex noise.
-Procedural methods are not physical, but rather statistical models, and this gives
-them some advatages over prevalent methods: they are computationally efficient, have low memory footprints and are only limited in terms of detail by the model in question. 
+In this paper, we have proposed a novel method for generating porous materials using procedural methods in the form of simplex noise.
+Procedural methods are not physical, but rather statistical models, which gives them some advantages over prevalent methods: they are computationally efficient, have low memory footprints and are only limited in terms of detail by the model in question. 
 In particular, it is possible to create simulations of arbitrary scales and resolution, indeed with any level of detail. 
 
-\todo{AMS: This is a bit weak currently. State first what you have succeeded in doing.
-Then state the possible weaknesses of the model.}
-We have developed a framework to generate nanoporous media using molecular dynamics simulations and
-to estimate model parameters given such data. 
-We have shown that it is possible through a full likelihood analysis to successfully reproduce the
-input parameters of procedurally simulated data. 
-In addition, we performed an analysis on a simulated $\SI{159}{\angstrom^{3}}$ data set of SiO$_2$,
-and explain that while porosity and surface area correspond well between the model and data,
-analysis of $g(r)$ shows that the current model reproduces the main features of the material, but that there are some deviations. 
+We have generated a series of statistically similar nanoporous materials with 75 \% porosity using molecular dynamics simulations and a heat, expand and quench method explained above.
+These systems have complicated pore networks, and are used as data input to our procedural noise model.
+The procedural noise model we have used is similar to what can be found in \cite{groeneboom:2014}, and has degrees of freedom on both short and long length scales.
+
+A full MCMC framework was developed. It takes files with atomic positions as input, deletes atoms according to equation \eqref{eq:delete_threshold} and compares each realization with the input data using different model measures, such as $g(r)$, surface area or porosity.
+In our work, we used $g(r)$ to compare a proposed parameter set to the input data.
+Our framework is validated by reproducing known parameters on a mock data set with our MCMC code before we run the code on the simulated system from molecular dynamics.
+The model reproduces the main features of $g(r)$, but both surface area and porosity were also found to be in good agreement between our best fit model and the data even though they were not used during the fitting process.
+
+However, by visually comparing the two systems in figure \ref{fig:porous_vs_model}, we see clear differences. For instance, covalent bonds are certainly broken, but this is expected since our model just removes atoms with no chemical care.
+In addition, the calculated $g(r)$ of our best fit model is lacking some features that exists in the simulated data, such as two weak bumps and a slight lower-valued tail.
+
 We find the correspondence strong, which demonstrates the proof-of-principle of the use of
-procedural noise methods, but we realize that even better correspondence may be achieved by
-including other summations in the procedural noise modes. 
+procedural noise methods, but we realize that even better correspondence may be achieved by including other summations in the procedural noise modes.
 
 \subsection{Future work}
 We have only considered the simplest kind of procedural noise: a simple sum over modes with
 threshold cut-off $\tau$, scale fall-off persistence $\psi$ and initial scale $\nu$. 
-We have also seen that, even through both porosity and surface area accurately reproduced,
-there are features in the RDF that are not fully captured with the current model. 
+We have also seen that, even though both porosity and surface area accurately reproduced,
+there are features in the radial distribution function that are not fully captured with the current model. 
 This is evident from the images of the simulated structure seen in figure \ref{fig:porous_vs_model},
 where the connecting nearly one-atom thin walls are difficult to reproduce with the current model. 
 However, as procedural noise exert properties closely related to that of fractals, it is possible
 to extend the number of parameters and define new models with very different properties. 
 Some examples of these models are depicted in figure \ref{fig:future_models}, where the left- and
-centre images show a new model with two new parameters (offset and gain), while the rightmost panel shows a simulation where the scale $\nu$ is itself being perturbed by procedural noise, yielding strong circular asymmetric patterns.   
+centre images show a new model with two new parameters (offset and gain), while the rightmost panel shows a simulation where the scale $\nu$ is itself being perturbed by procedural noise, yielding strong circular asymmetric patterns.
 
 Another immediate application would be to estimate model parameters given experimental observations of porous media. 
 This would enable us to estimate new parameters such as instrumental noise, deviations from symmetry
