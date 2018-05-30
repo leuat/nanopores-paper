@@ -399,7 +399,7 @@ full analysis of physical system simulated with molecular dynamics, and seek par
 \subsection{Model verification: Parameter estimation of mock data}
 \begin{figure}[htb!]
 \includegraphics[width=.45\textwidth]{model_test.png}
-\caption{Simulated mock data used for the initial model testing analysis. Input parameters are $\nu=0.03$,$\tau=-0.02$ and $\psi=0.6$.}
+\caption{Simulated mock data used for the initial model testing analysis. Input parameters are $\nu=0.03$,$\tau=-0.2$ and $\psi=0.6$.}
 \label{fig:mockdata}
 \end{figure}
 In order to verify our likelihood code, we perform a model verification test
@@ -438,7 +438,7 @@ the marginalised distributions vary by $\sigma_\tau = 0.02 \sim 10\%$, $\sigma_\
 \begin{figure*}
 \includegraphics[width=.99\textwidth]{results_porous_full.png}
 \caption{
-Results from the analysis of a simulated $\SI{159} {\angstrom}^3$ SiO$_2$ nanoporous data set. The upper panel displays the marginalised 1D posteriors for each parameter, while the lower panel depicts the marginalised 2D posteriors. Best fit parameters from the maximum 3D likelihood suggest $\tau=-0.2$, $\psi=0.8$ and $\nu=0.3$.
+Results from the analysis of a simulated $\SI{159} {\angstrom}^3$ SiO$_2$ nanoporous data set. The upper panel displays the marginalised 1D posteriors for each parameter, while the lower panel depicts the marginalised 2D posteriors. Best fit parameters from the maximum 3D likelihood suggest $\tau=-0.2$, $\psi=0.9$ and $\nu=0.03$.
 }
 
 \label{fig:porous_results1}
@@ -461,54 +461,62 @@ where the best-fit parameters $\tau=-0.2$, $\psi=0.9$ and $\nu=0.03$ is extracte
 We also display $g(r)$ for the input data set, a best-fit parameter data set and a
 bad-fit data set in figure \ref{fig:gofr1}, to illustrate the sensitivity of $g(r)$ given the model parameters.
 $\chi^2$ is only calculated for $r\in (3,15)$ since the nanoporous structure signal is found at larger $r$.
-The main features of $g(r)$ from the data is picked up by our best-fit model and the bad fit (which has very high porosity) has slower convergence.
-We see that we don't accurately reproduce all structures of the SiO$_2$ $g(r)$ with
-our current model. For instance, the long tail is consistantly slightly lower in our model, and some of the bumps have details that differ from what our model gives.
+The main features of $g(r)$ from the data is reproduced by our best-fit model, whereas the bad fit (which has higher porosity) clearly differs.
+It converges slowly due to the large pores in the system. Even if all $g(r)$ are normalized to equal areas, the bad fit shows different scaling at large $r$.
 
-\todo{skriv om hvorfor vi ikke plukker opp alle features?}
+Our current best fit model doesn't reproduce all features of the SiO$_2$ $g(r)$, especially the two weak bumps at \SI{6.5}{\angstrom} and \SI{7.5}{\angstrom} and a constantly slightly lower value for large $r$.
+Another important detail here is that the surface atoms are not in chemical equilibrium since some neighbours of a surface atom might lose some of its covalently bonded neighbors have been removed. 
+In order to use the generated geometry in molecular dynamics, one would need either noble gas atoms which may be stable, or to apply passivation step.
 
-Also note that the surface atoms are not in chemical equilibrium since some neighbours of a surface atom might have been removed. 
-In order to use the generated geometry in molecular dynamics, one would need either noble gas
-atoms which may be stable, or to apply passivation step.
+\todo{skriv om hvorfor vi ikke plukker opp alle features? Men i diskusjon!}
 
 \begin{figure}
 \includegraphics[width=0.5\textwidth]{gofr_figure.pdf}
-\caption{$g(r)$ for three data sets: the simulated SiO$_2$ input data set (red), the best-fit parameter model (blue) and a random low-fit parameter model (green).}
+\caption{$g(r)$ for three data sets: the simulated SiO$_2$ input data set (red), the best-fit parameter model (blue) and a random low-fit parameter model (yellow).
+The red shaded area for low $r$ represents the part of $g(r)$ we have not used to calculate $\chi^2$ since it only captures nearest neighbor features, not the pore structure.
+The main difference between the bad fit and the others is the scaling which is due to slow convergence since the bad fit dataset has very large pores.
+There are two weak bumps at \SI{6.5}{\angstrom} and \SI{7.5}{\angstrom} which we don't pick up with our model, but the general behaviour is reproduced by our model both on short and long length scales.}
 \label{fig:gofr1}
 \end{figure}
+
 Finally, we depict a comparison of the actual simulated input SiO$_2$ data set together with a
 representation of the best-fit parameters in figure \ref{fig:porous_vs_model}   
 \begin{figure}
 \includegraphics[width=.45\textwidth]{comparison.png}
-\caption{Right side: A realisation of the best-fit parameters $\tau=-0.2$, $\psi=0.8$ and $\nu=0.3$.Left side: Simulated SiO$_2$ input data set used for parameter estimation. Although the pore geometry seems to be similar, we see some artifacts, such as single loose atoms in the generated geometry.}
+\caption{Comparison of our best fit model (left) with parameters $\tau=-0.2$, $\psi=0.9$ and $\nu=0.03$ and the simulated SiO$_2$ input data (right).
+Although the pore geometry seems to be similar, we see some artifacts, such as single loose atoms in the generated geometry.
+To obtain a structure that can be used further, one would have to passivate the system by adding atoms so each atom has the desired coordination number.
+Both the porosity and the surface area of the model and the data are found to be similar.}
 \label{fig:porous_vs_model}
 \end{figure}
 
 The porosity of the input SiO$_2$ data set is $75\%$, while the best-fit data set has
 porosity $77\% \pm 3 \%$, depending on the random seed. In addition, the surface area
-of the original data set was $\sim \SI{29000}{\angstrom^2}$, while the best-fit data
+of the original data set was found to be $\sim \SI{29000}{\angstrom^2}$, while the best-fit data
 shows similar values with surface are ranging between $\sim \SI{28000}{\angstrom^2}$ and $\sim \SI{30000}{\angstrom^2}$.
-\todo{legg ved 3D plot av likelihood for aa vise at den er kjekk og fin}
 
 \subsection{Discussion}
 It is worth to note that since we are chiefly interested in obtaining a set of
-parameters that reproduces a statistical correct representation of the input data,
+parameters that reproduces a statistical correct representation of the input geometry,
 we are relatively free to choose parameters as desired within the posterior distribution width of the parameter.
 In the previous analysis, we selected a best fit threshold value of $\tau=-0.2$,
 but from the width of the likelihood it is clear that nearby parameters would also be suitable. 
-However, the surface area is strongly correlated with this value, so even slight
-deviations (e.g. $\Delta \tau = 0.05$) yields a relatively large change in surface area. 
-In addition, we do not claim that this model completely reproduces the pore structure
-observed in nanoporous simulations, as is evident from the RDF shown in figure \ref{fig:gofr1},
-but hope to discover a better model that will produce a $g(r)$ that is more in accordance with the data.
+However, we found that the surface area is strongly correlated with this value, so even slight
+deviations (e.g. $\Delta \tau = 0.05$) yields a relatively large change in surface area.
+Our simple measure was only using $g(r)$, and did not use the surface area to find optimal parameters.
+The porosity $\phi$ is probably indirectly correlated with the tail of $g(r)$, so introducing $\phi$ in the $\chi^2$ may not yield improved results.
+Extending $\chi^2$ to include more effects such as the surface area, pore connectivity or even physical simulations such as diffusion constants from random walks is not difficult to do.
+Adding more measures does not necessarily help since our model may not have enough degrees of freedom on enough length scales.
+
+We do not claim that our simple model fully reproduces the pore structure obtain from the molecular dynamics simulations, as is evident from $g(r)$ shown in figure \ref{fig:gofr1},
+but we hope to find better models.
 
 \subsection{$g(r)$ variation}
-We also calculated the variation in the $g(r)$ given initial conditions on both our model and simulated data. 
-In terms of the data, the variation is attributed as the initial velocities of the particles in the LAMMPS simulation. 
-For the model, it corresponds to the random seed. We found that varying these
-initial conditions have negligible effect on the calculation of $g(r)$.
-
-
+Realizations from different random seeds yield different pore networks.
+In the simulated systems, we can obtain this by using different initial conditions for the velocities.
+Our procedural noise model can be randomized by applying random permutations of the gradient vectors as described in \cite{perlin1985image}.
+By generating multiple statistically similar data sets with the two methods (molecular dynamics simulation and from our noise model), we can test the robustness of using $g(r)$ as our model measure.
+We found that varying these initial conditions have negligible effect on the calculation of $g(r)$.
 
 \section{Conclusion}
 \todo{konklusjon maa renskrives}
