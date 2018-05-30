@@ -229,7 +229,7 @@ simplex noise over regular Perlin noise as the main noise function throughout th
 
 \begin{figure}
 \includegraphics[width=.5\textwidth]{1d_noise.pdf}
-\caption{1-dimensional simplex noise with 1 (yellow), 3 (red) and 30 (blue) octaves. Adding more octaves adds high frequency features, but it still follows the 1 octave base value.}
+\caption{1-dimensional simplex noise with 1 (yellow), 3 (red) and 30 (blue) octaves. Adding more octaves adds high frequency features, but it still follows the 1 octave base signal.}
 \label{fig:1dperlin}
 \end{figure}
 
@@ -275,6 +275,7 @@ A boolean function $\text{Delete}(\vec r)$ is defined as
     \text{True} & \text{if} \quad M_1(\vec r |\bar \theta) < \tau \\
     \text{False} & \text{if} \quad M_1(\vec r |\bar \theta) \geq \tau,
   \end{cases}
+  \label{eq:delete_threshold}
 \end{align}
 where we simply evaluate this function for every atom in the system.
 The threshold $\tau$ is now added as a parameter to the model.
@@ -296,7 +297,8 @@ Ideally, the model measure should pick up all geometrical properties that are
 relevant for the physical study of interest. 
 For instance, transport in porous media heavily depends on the pore size distribution and porosity\cite{kozeny1927uber, carman1937fluid},
 whereas chemical reactons are sensitive to surface area\cite{coussy2011mechanics}. We have used $g(r)$ as defined and implemented in LAMMPS\cite{plimpton1995fast}.
-In our cost function (the $\chi^2$ measure), we have ignored the low $r$ values of $g(r)$ since the pore geometry does not depend on the intra-molecular structure, but only the density variations at larger distances.
+In our cost function (the $\chi^2$ measure), we have ignored the values of $g(r)$ for $r<$\SI{3}{\angstrom} since the pore geometry does not depend on the intra-molecular structure, but only the density variations at larger distances.
+The cutoff value of \SI{3}{\angstrom} was chosen since the peak of $g(r)$ is at \SI{2.9}{\angstrom} for Si-O\cite{vashishta1990interaction}, and has .
 
 Hereafter, $g_d(r)$ denotes the RDF calculated from simulated or experimental data,
 while $g_{M(\bar \theta)}(r)$ represents the RDF based on the procedural noise
@@ -306,7 +308,7 @@ As an additional validation, we also compute the porosity and surface area of th
 The method used for calculating porosity of a porous media is the same as in \cite{gelb1998characterization}.
 Surface area is obtained by creating a voxelized grid of the system with values being the distance from each voxel center to the nearest atom.
 This is now a scalar field and we can apply marching cubes\cite{lorensen1987marching} to triangulate an isosurface of the distance field.
-This gives a trianglated representation of the porous media defined by a set of atomic positions.
+This gives a triangulated representation of the porous media defined by a set of atomic positions.
 As discussed in \cite{gelb1998characterization}, the definition of surface area is ill-defined in
 atomistic simulations, because a clear definition of pore space is difficult.
 We have chosen to define the pore space as the set of points being more than \SI{2}{\angstrom} to any atom.
@@ -338,30 +340,28 @@ P(\bar \theta | d) = \frac{P(d | \bar \theta)P(\bar \theta)}{P(d)} \propto P(d |
 where $P(d | \bar \theta)$ is called the Likelihood $\mathcal L$ (the probability of
 evidence given parameters) and $P(\bar \theta)$ is the prior (the beliefs about the
 quantity before some evidence is taken into account). $P(d)$ is called the evidence,
-and is the probability of the observations (here assumed to be 1). Prior parameters
-are restricted to freely roam within a minimum and maximum value, so we can therefore
-assume that the posterior distribution is proportional to the likelihood, or
-$P(d | \bar \theta) \propto \mathcal L$. In other words, to calculate the posterior
-probability distribution and obtaining the best fit model parameters, we need only
-to estimate the likelihood function, which is connected to the $\chi^2$ by 
+and is the probability of the observations (here assumed to be 1). 
+To calculate the posterior probability distribution and obtain the best fit model parameters, we need only
+to estimate the likelihood function, which is connected to the $\chi^2$\todo{Why do we have an exponential dependence of $\chi^2$ here?} by 
 \begin{equation}
 \mathcal L \propto e^{-\chi^2}.
 \end{equation}
 
-
 In order to estimate whether two 3D data sets are statistically equivalent up to
 the model measure $g(r)$, we calculate the $\chi^2$ between the two one-dimensional
-RDFs. Pearson's $\chi^2$ is defined as 
+RDFs. We calculate $g(r)$ using a histogram over spherical shells of distance $r_i$ to the center for bin $i$. Pearson's $\chi^2$ is then defined as 
 \begin{equation}
-  \chi^2 = \sum_r \frac{ \Big(g_d(r) - g_{M(\bar \theta)}(r) \Big)^2}{g_{M(\bar \theta)}(r)^2},
+  \chi^2 = \sum_{i} \frac{ \Big(g_d(r_i) - g_{M(\bar \theta)}(r_i) \Big)^2}{g_{M(\bar \theta)}(r_i)^2},
 \end{equation}
-so for low values of $\chi^2$, the better the fit between data and model, up to
-$g(r)$. For a single-parameter model, we could simply just iterate over the lone
-parameter to obtain the minimum $\chi^2$ (where the best-fit parameter value resides),
-however, with increased number of parameters comes increased computational cost.
-If we divide the parameter space into $N$ bins, the number of $\chi^2$ computations
-scales as $N^d$, where $d$ is the number of model parameters. To be able to build
-the full landscape of the posterior probability distribution, we need to use the Monte Carlo Markov chain (MCMC) method .
+which means that for low values of $\chi^2$, the better the fit between data and model, up to $g(r)$.
+
+The difficult task is now to find which set of parameters $\bar\theta$ that maximizes the likelihood $\mathcal L$.
+For a single-parameter model with parameter $\psi$, we could simply just discretize the interval $[\psi_\text{min}, \psi_\text{max}]$ into $N$ values,
+and loop over all parameter to obtain the minimum $\chi^2$.
+However, each parameter is an extra dimension in the parameter space, with increases the computational cost substantially.
+If each parameter is discretized into into $N$ values, the full number of $\chi^2$ computations
+scales as $N^d$, where $d$ is dimension of the parameter space - i.e. the number of model parameters. To be able to build
+the full landscape of the posterior probability distribution, we have chosen to use the Monte Carlo Markov chain (MCMC) method.
 
 We are now interested in maximising the likelihood $\mathcal L$ as opposed to
 minimising the $\chi^2$, with the goal of mapping out the full $d$-dimensional
@@ -371,7 +371,7 @@ for each step $M(\bar \theta_{n})$ in parameter space, we calculate the likeliho
 $\mathcal L_n$ for this particular parameter configuration. Then, for the next
 step, we create a new set of parameters $M(\bar \theta_{n+1})$ by choosing new
 parameters randomly from a $d$-dimensional sphere around the previous parameter
-composition. The model also selects a new random seed. We calculate the proposed
+composition. We calculate the proposed
 likelihood $\mathcal L_{n+1}$ at this new step and perform the MCMC test: accept
 the new step if $\frac{\mathcal L_n}{\mathcal L_n+1} \ge 1$, or reject if the value
 is lower than a uniform random value $\in [0,1]$. 
@@ -381,7 +381,7 @@ a $d$-dimensional histogram of the likelihood using the stored positions of the 
 For a sufficiently large amount of steps, the MCMC algorithm ensures that the posterior
 converges to the likelihood, as long at the surface does not contain unreachable areas
 such as discontinuous patches or an infinite amount of maxima (as is the case for the
-function $f(x)=sin(\frac{1}{x}$). Luckily, as we shall see, the likelihood surface for
+function $f(x)=\sin(\frac{1}{x}$)). Luckily, as we shall see, the likelihood surface for
 our models tend to turn out with a single, well-defined maximum.  
 
 
@@ -394,9 +394,8 @@ likelihood landscape, such as random walkers trapped in local minima. In additio
 we will obtain an intuition on the width of the estimated parameter distributions.
 But most importantly, we will have verified that our likelihood code is working correctly
 if we successfully reproduce the original input parameters. We then continue with a
-full analysis of simulated SiO$_2$ data, and see whether the resulting best-fit
-parameter data set is consistent with the SiO$_2$ data set. 
-
+full analysis of physical system simulated with molecular dynamics, and seek parameters that reproduces $g(r)$ of this system.
+\todo{Figure 5 is the same as left in fig 9.}
 \subsection{Model verification: Parameter estimation of mock data}
 \begin{figure}[htb!]
 \includegraphics[width=.45\textwidth]{model_test.png}
@@ -406,19 +405,20 @@ parameter data set is consistent with the SiO$_2$ data set.
 In order to verify our likelihood code, we perform a model verification test
 on a mock data set with known input values based on equation \ref{eq:noisemodel1}.
 In this example, we only use standard simplex noise with three free parameters:
-the persistence $\psi$, threshold $\tau$ and scale $\nu$. We simulate a data set
-of size $\SI{159} {\angstrom}^3$ with $\sim 255 000$ atoms, and perform the cut-off
-given by input parameters $\Omega=3$, $\Psi = 0.6$, $\tau=-0.2$ and $\nu=0.03$.
+the persistence $\psi$, threshold $\tau$ and scale $\nu$. 
+
+The physical system is a periodic box with amorphous SiO$_2$ of size $\SI{159} {\angstrom}^3$ (255552 atoms), created with a heat-and-quench method.
+A nanoporous system is created by removing atoms from the system accordin to equation \eqref{eq:delete_threshold} with parameters $\Omega=3$, $\Psi = 0.6$, $\nu=0.03$ and $\tau=-0.2$.
 The resulting 3D structure is depicted in figure \ref{fig:mockdata}. 
 
 We continue by executing a full MCMC analysis on the mock data by using a
 parallelized code written in C++ running on a 48 core cluster. About 48 hours
-was needed to produce about 300 000 samples. The results from this analysis
+was needed to produce about 300000 samples. The results from this analysis
 can be seen in figure \ref{fig:mockdataresults_pts}, where the upper panel
 depicts the marginalised 1D posteriors while the lower shows the marginalised
 2D posteriors. The centre and left image shows that the input parameters of
 $\tau=-0.2$(threshold), $\psi=0.6$(persistence) and $\nu=0.03$ are all reproduced
-well within $1 \sigma$. Note that there seems to be no problems with the posterior
+well within $1 \ \sigma$ ($\Omega$ was kept fixed equal to 3). Note that there seems to be no problems with the posterior
 distribution in terms of local minima or multiple maxima. In addition, the results
 show that all the parameters are correlated with $r \sim 0.85$, while the width of
 the marginalised distributions vary by $\sigma_\tau = 0.02 \sim 10\%$, $\sigma_\Psi = 0.062 \sim 20\%$ and $\sigma_\nu = 0.01 \sim 33\%$. 
@@ -443,31 +443,31 @@ Results from the analysis of a simulated $\SI{159} {\angstrom}^3$ SiO$_2$ nanopo
 
 \label{fig:porous_results1}
 \end{figure*}
-Having verified that the likelihood code yields correct results when analysing mock data, we turn to 
+Having verified that the likelihood code yields satisfying results when analysing mock data, we turn to 
 performing a parameter fitting analysis on realistic simulated nanoporous media.
-Using LAMMPS \cite{plimpton1995fast} and the Vashishta-potential \cite{vashishta1990interaction},
-we simulate system consisting of $14^3$ betacristobalite unit cells of SiO$_2$, corresponding
+Using LAMMPS\cite{plimpton1995fast} and the Vashishta-potential\cite{vashishta1990interaction},
+we simulate system consisting of $14^3$ stretched\footnote{The nanoporous material will be amorphous, so we have stretched the initial crystal to match the density of amorphous silica.} betacristobalite unit cells of SiO$_2$, corresponding
 to system size of approximately \SI{100}{\angstrom}. 
-The temperature is then increased to \SI{4500}{\kelvin} using NVT integration. 
-After an initial period, we expand the box to \SI{159}{\angstrom} to achieve a porosity $\phi=0.75$. 
-Then, the system is quenched by setting the temperature to \SI{300}{\kelvin},
+The system is then melted at \SI{4500}{\kelvin} using the Nose-Hoover thermostat.
+After a few nanoseconds, the system box is slowly expanded to \SI{159}{\angstrom} to achieve a porosity of $\phi=0.75$ while keeping the thermostat on to keep the temperature constant.
+Then, the system is quenched by setting the target thermostat temperature to \SI{300}{\kelvin},
 resulting in the nanoporous media on the right side in figure \ref{fig:porous_vs_model}. 
-By choosing a different seed for the initial velocities, it is possible to produce
-statistically equal samples but with random realizations. 
-
+By repeating this for different initial velocities, we can produce statistically similar samples with random realizations. 
 
 With the model described in equation \ref{eq:noisemodel1}, we perform a full likelihood
 analysis of the data set with the three free parameters $\tau$, $\nu$ and $\psi$ using $g(r)$ as the measure. 
 The resulting marginalised posteriors are depicted in figure \ref{fig:porous_results1},
-where the best-fit parameters $\tau=-0.2$, $\psi=0.8$ and $\nu=0.3$ is extracted from the full 3D likelihood. 
+where the best-fit parameters $\tau=-0.2$, $\psi=0.9$ and $\nu=0.03$ is extracted from the full 3D likelihood. 
 We also display $g(r)$ for the input data set, a best-fit parameter data set and a
-bad-fit data set in figure \ref{fig:gofr1}, to illustrate the sensitivity of $g(r)$ given the model parameters. 
-Note that we are not able to accurately reproduce the structures of the SiO$_2$ $g(r)$ with
-our current model, but hope that we during future work will be able to produce another model
-that provides a better fit with this measure. 
+bad-fit data set in figure \ref{fig:gofr1}, to illustrate the sensitivity of $g(r)$ given the model parameters.
+$\chi^2$ is only calculated for $r\in (3,15)$ since the nanoporous structure signal is found at larger $r$.
+The main features of $g(r)$ from the data is picked up by our best-fit model and the bad fit (which has very high porosity) has slower convergence.
+We see that we don't accurately reproduce all structures of the SiO$_2$ $g(r)$ with
+our current model. For instance, the long tail is consistantly slightly lower in our model, and some of the bumps have details that differ from what our model gives.
+
 \todo{skriv om hvorfor vi ikke plukker opp alle features?}
 
-Note that the surface atoms are not in chemical equilibrium since some neighbours of a surface atom might have been removed. 
+Also note that the surface atoms are not in chemical equilibrium since some neighbours of a surface atom might have been removed. 
 In order to use the generated geometry in molecular dynamics, one would need either noble gas
 atoms which may be stable, or to apply passivation step.
 
