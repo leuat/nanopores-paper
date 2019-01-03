@@ -8,16 +8,9 @@
 \usepackage{epstopdf}
 \usepackage{siunitx}
 \usepackage{color}
-\definecolor{Blue}{rgb}{0.1,0.1,1.0} 
-\definecolor{Magenta}{rgb}{1.0,0.1,0.5} 
-\definecolor{LRed}{rgb}{0.8,0.0,0.0} 
-
- \newcommand{\todo}[1]{ {\color{Magenta} TODO: \color{Blue} \textbf{#1} }}
-
 
 \begin{document}
 \title{Structural replication of nanoporous media using procedural noise}
-%\author{A. Hafreager, N. Groeneboom, A. Malthe-S\oe renssen$^1$}
 \email{anders.hafreager@fys.uio.no}
 \author{Anders Hafreager $^{1}$} 
 \author{Nicolaas Groeneboom $^{1}$} 
@@ -110,7 +103,7 @@ materials that are structurally similar to simulationed materials.
 \section{Procedural content generation}
 By procedural content generation, we generally mean a mathematical algorithm that uses limited
 input data to create complex, sometimes infinite repeating patterns.
-A firm example would be fractals, such as the Julia/Mandelbrot [ref Mandelbrot] set, where one
+A firm example would be fractals, such as the Mandelbrot set, where one
 tests whether the complex quadratic recurrence equation $z_{n+1} = z_n^2 +C$ for $z \in \mathbb C$
 converges for each position in a 2D complex plane.
 With this seemingly simple equation, the level of complexity generated on the boundary between
@@ -128,7 +121,7 @@ Naturally, it is also possible to create procedural methods that design the layo
 A much simpler example would be generating a 1 (or 2)-dimensional terrain by choosing random
 points on a grid and performing a spline interpolation between them to create the illusion of a smooth landscape.
 In fact, this is the very essence of procedural noise, which we are focusing on in our model,
-and the first person to create such a fast algorithm for N-dimensional spline interpolation
+and the first person to create such a fast algorithm for $N$-dimensional spline interpolation
 between pseudo-random points was Ken Perlin\cite{perlin1985image}.
 
 \subsection{Perlin/Simplex noise}
@@ -172,7 +165,7 @@ and has fewer anisotropic properties.
 
 \subsection{Properties of Perlin/simplex noise}
 \begin{figure}
-\includegraphics[width=.5\textwidth]{noise.eps}
+\includegraphics[width=.5\textwidth]{fig1.eps}
 \caption{Perlin noise (left) versus simplex noise (right). Note the
   straight x-y pattern in the single upper Perlin mode and the less
   anisotropic simplex mode. Lower part: combining octaves tend
@@ -181,7 +174,7 @@ and has fewer anisotropic properties.
 \end{figure}
 
 \begin{figure}
-\includegraphics[width=.5\textwidth]{noise_comparison.png}
+\includegraphics[width=.5\textwidth]{fig2.png}
 %\mbox{\epsfig{file=perlinstats.eps, width=\linewidth}}
 \caption{Normalized distributions of Perlin noise and simplex noise compared with a
   Gaussian distribution. Note how both noise functions produce
@@ -228,7 +221,7 @@ with higher dimensions and produces less asymmetric effects, we choose to use
 simplex noise over regular Perlin noise as the main noise function throughout this paper.
 
 \begin{figure}
-\includegraphics[width=.5\textwidth]{1d_noise.pdf}
+\includegraphics[width=.5\textwidth]{fig3.pdf}
 \caption{1-dimensional simplex noise with 1 (yellow), 3 (red) and 30 (blue) octaves. Adding more octaves adds high frequency features, but it still follows the 1 octave base signal.}
 \label{fig:1dperlin}
 \end{figure}
@@ -246,7 +239,7 @@ The fitting procedure consists of measuring $g(r)$ for both the data and the mod
 In addition, we also investigate the porosity and surface area of the system after fitting since these are important physical quantities in such systems.
 
 \begin{figure*}
-\includegraphics[width=.95\textwidth]{model_examples.png}
+\includegraphics[width=.95\textwidth]{fig4.png}
 \caption{Examples of 3D simplex noise structures in nanoporous media. Left image:
 low persistence (large scale dominates), middle image: medium persistence (small
 scales starts dominating) and right image: high threshold (more atoms are discarded). }
@@ -342,7 +335,7 @@ evidence given parameters) and $P(\bar \theta)$ is the prior (the beliefs about 
 quantity before some evidence is taken into account). $P(d)$ is called the evidence,
 and is the probability of the observations (here assumed to be 1). 
 To calculate the posterior probability distribution and obtain the best fit model parameters, we need only
-to estimate the likelihood function, which is connected to the $\chi^2$\todo{Why do we have an exponential dependence of $\chi^2$ here?} by 
+to estimate the likelihood function, which is connected to the $\chi^2$ by 
 \begin{equation}
 \mathcal L \propto e^{-\chi^2}.
 \end{equation}
@@ -395,10 +388,9 @@ we will obtain an intuition on the width of the estimated parameter distribution
 But most importantly, we will have verified that our likelihood code is working correctly
 if we successfully reproduce the original input parameters. We then continue with a
 full analysis of physical system simulated with molecular dynamics, and seek parameters that reproduces $g(r)$ of this system.
-\todo{Figure 5 is the same as left in fig 9.}
 \subsection{Model verification: Parameter estimation of mock data}
 \begin{figure}[htb!]
-\includegraphics[width=.45\textwidth]{model_test.png}
+\includegraphics[width=.45\textwidth]{fig5.png}
 \caption{Simulated mock data used for the initial model testing analysis. Input parameters are $\nu=0.03$,$\tau=-0.2$ and $\psi=0.6$.}
 \label{fig:mockdata}
 \end{figure}
@@ -424,7 +416,7 @@ show that all the parameters are correlated with $r \sim 0.85$, while the width 
 the marginalised distributions vary by $\sigma_\tau = 0.02 \sim 10\%$, $\sigma_\Psi = 0.062 \sim 20\%$ and $\sigma_\nu = 0.01 \sim 33\%$. 
 
 \begin{figure*}
-\includegraphics[width=.99\textwidth]{mock_data_results_pts.png}
+\includegraphics[width=.99\textwidth]{fig6.png}
 \caption{Results from the model validation simulation.The upper panel displays the marginalised 1D posteriors for each parameter, while the lower panel depicts the marginalised 2D posteriors. Note that all input parameters were reproduced well within $1 \sigma$ (inner contour line).}
 \label{fig:mockdataresults_pts}
 \end{figure*}
@@ -436,7 +428,7 @@ the marginalised distributions vary by $\sigma_\tau = 0.02 \sim 10\%$, $\sigma_\
 %\label{fig:si2data}
 %\end{figure}
 \begin{figure*}
-\includegraphics[width=.99\textwidth]{results_porous_full.png}
+\includegraphics[width=.99\textwidth]{fig7.png}
 \caption{
 Results from the analysis of a simulated $\SI{159} {\angstrom}^3$ SiO$_2$ nanoporous data set. The upper panel displays the marginalised 1D posteriors for each parameter, while the lower panel depicts the marginalised 2D posteriors. Best fit parameters from the maximum 3D likelihood suggest $\tau=-0.2$, $\psi=0.9$ and $\nu=0.03$.
 }
@@ -469,7 +461,7 @@ Another important detail here is that the surface atoms are not in chemical equi
 In order to use the generated geometry in molecular dynamics, one would need either noble gas atoms which may be stable, or to apply passivation step.
 
 \begin{figure}
-\includegraphics[width=0.5\textwidth]{gofr_figure.pdf}
+\includegraphics[width=0.5\textwidth]{fig8.pdf}
 \caption{$g(r)$ for three data sets: the simulated SiO$_2$ input data set (red), the best-fit parameter model (blue) and a random low-fit parameter model (yellow).
 The red shaded area for low $r$ represents the part of $g(r)$ we have not used to calculate $\chi^2$ since it only captures nearest neighbor features, not the pore structure.
 The main difference between the bad fit and the others is the scaling which is due to slow convergence since the bad fit dataset has very large pores.
@@ -480,7 +472,7 @@ There are two weak bumps at \SI{6.5}{\angstrom} and \SI{7.5}{\angstrom} which we
 Finally, we depict a comparison of the actual simulated input SiO$_2$ data set together with a
 representation of the best-fit parameters in figure \ref{fig:porous_vs_model}   
 \begin{figure}
-\includegraphics[width=.45\textwidth]{comparison.png}
+\includegraphics[width=.45\textwidth]{fig9.png}
 \caption{Comparison of our best fit model (left) with parameters $\tau=-0.2$, $\psi=0.9$ and $\nu=0.03$ and the simulated SiO$_2$ input data (right).
 Although the pore geometry seems to be similar, we see some artifacts, such as single loose atoms in the generated geometry.
 To obtain a structure that can be used further, one would have to passivate the system by adding atoms so each atom has the desired coordination number.
@@ -505,8 +497,6 @@ Our simple measure was only using $g(r)$, and did not use the surface area to fi
 The porosity $\phi$ is probably indirectly correlated with the tail of $g(r)$, so introducing $\phi$ in the $\chi^2$ may not yield improved results.
 Extending $\chi^2$ to include more effects such as the surface area, pore connectivity or even physical simulations such as diffusion constants from random walks is not difficult to do.
 Adding more measures does not necessarily help since our model may not have enough degrees of freedom on enough length scales.
-
-\todo{skriv om hvorfor vi ikke plukker opp alle features? Men i diskusjon!}
 
 We do not claim that our simple model fully reproduces the pore structure obtain from the molecular dynamics simulations, as is evident from $g(r)$ shown in figure \ref{fig:gofr1},
 but we hope to find better models.
